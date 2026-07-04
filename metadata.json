@@ -1,0 +1,6 @@
+{
+  "name": "LabourAdda v2.0",
+  "description": "India's Digital Labour Infrastructure Platform connecting daily wage labourers, contractors, and employers across urban, semi-urban, and rural environments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
