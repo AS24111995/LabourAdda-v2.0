@@ -1079,6 +1079,8 @@ export default function HomePage() {
     { id: "sj-1", title: "Metro Station Tiling Work", contractor: "UP Metro Rail Corp", location: "Gorakhpur Center", wage: "₹800 / Day" }
   ]);
 
+  const [viewingTrustJobId, setViewingTrustJobId] = useState<string | null>(null);
+
   // Smart Filters State for National Matching Panel
   const [matchFilterTrade, setMatchFilterTrade] = useState("all");
   const [matchFilterDistrict, setMatchFilterDistrict] = useState("Gorakhpur");
@@ -1966,6 +1968,394 @@ export default function HomePage() {
                             hasApplied 
                               ? "bg-slate-900 border border-slate-800 text-emerald-400 cursor-default" 
                               : "bg-amber-500 hover:bg-amber-600 text-slate-950"
+                          }`}
+                        >
+                          {hasApplied 
+                            ? (lang === "hi" ? "आवेदन स्वीकृत ✓" : "Applied ✓") 
+                            : (lang === "hi" ? "अभी आवेदन करें" : "Apply Now")}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* AI SKILL-TO-JOB MATCHING ENGINE */}
+            <div id="ai-matching-engine-section" className="pt-6 border-t border-slate-800/80 space-y-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-900 pb-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" />
+                  <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                    {lang === "hi" ? "एआई कौशल-से-नौकरी मिलान इंजन" : "AI Skill-to-Job Matching Engine"}
+                  </h4>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const primarySkill = regSelectedSkills.length > 0 ? regSelectedSkills[0] : "Mason";
+                      const textHi = `एआई मिलान रिपोर्ट। आपके ${primarySkill} कौशल के आधार पर, ३ नजदीकी नौकरियों की सिफारिश की गई है। आपका औसत मिलान स्कोर ९३ प्रतिशत है।`;
+                      const textEn = `AI Match Report. Based on your ${primarySkill} skills, 3 nearby jobs have been recommended. Your average match score is 93 percent.`;
+                      handleVoiceSpeak(textHi, textEn);
+                    }}
+                    className="p-1.5 px-3 bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-slate-950 rounded-xl border border-amber-500/30 transition cursor-pointer flex items-center gap-1.5 text-[10px] font-bold"
+                  >
+                    <Volume2 className="w-3.5 h-3.5" />
+                    <span>{lang === "hi" ? "एआई मैच रिपोर्ट सुनें" : "Listen to AI Match"}</span>
+                  </button>
+
+                  <span className="text-[9px] text-amber-400 font-mono font-bold uppercase bg-amber-500/10 border border-amber-500/25 px-2.5 py-0.5 rounded-full">
+                    AI Active Match (एआई सक्रिय मिलान)
+                  </span>
+                </div>
+              </div>
+
+              {/* JURY DEMO HIGHLIGHT */}
+              <div className="bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-slate-950 p-4 rounded-2xl border border-amber-500/20 text-left">
+                <div className="flex items-start gap-2.5">
+                  <Award className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[9px] font-mono text-amber-500 uppercase tracking-wider font-bold block">
+                      {lang === "hi" ? "जूरी डेमो हाइलाइट" : "Jury Demo Highlight"}
+                    </span>
+                    <p className="text-xs text-slate-200 leading-relaxed mt-1 font-sans">
+                      {lang === "hi"
+                        ? "“लेबरअड्डा नौकरी खोज घर्षण को कम करने, मजदूरी पारदर्शिता में सुधार करने और सत्यापित श्रमिकों को विश्वसनीय स्थानीय अवसरों से जोड़ने के लिए एआई-सहायता प्राप्त मिलान का उपयोग करता है।”"
+                        : "“LabourAdda uses AI-assisted matching to reduce job search friction, improve wage transparency, and connect verified workers with trusted local opportunities.”"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3 AI RECOMMENDED JOBS CARDS */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  {
+                    id: "aim-1",
+                    titleEn: `${regSelectedSkills.length > 0 ? regSelectedSkills[0] : "Mason"} Specialist Work`,
+                    titleHi: `विशेषज्ञ ${regSelectedSkills.length > 0 ? regSelectedSkills[0] : "राजमिस्त्री"} कार्य`,
+                    employerEn: "L&T Infrastructure",
+                    employerHi: "एलएंडटी इंफ्रास्ट्रक्चर",
+                    locationEn: "Sahjanwa Industrial Area",
+                    locationHi: "सहजनवा औद्योगिक क्षेत्र",
+                    matchPercentage: 98,
+                    tradeMatchHi: "पूर्ण मिलान (100%)",
+                    tradeMatchEn: "Full Match (100%)",
+                    wageEn: "₹850 / Day",
+                    wageHi: "₹850 / प्रतिदिन",
+                    wageMatchHi: "अपेक्षा से अधिक (+₹100)",
+                    wageMatchEn: "Higher than expected (+₹100)",
+                    distanceEn: "1.5 km away",
+                    distanceHi: "1.5 किमी दूर",
+                    distanceMatchHi: "बहुत नजदीक",
+                    distanceMatchEn: "Very close",
+                    trustScore: 99,
+                    trustMatchHi: "उत्कृष्ट (99% ट्रस्ट)",
+                    trustMatchEn: "Excellent (99% Trust)",
+                    experienceReqEn: "3+ Years Required",
+                    experienceReqHi: "3+ वर्ष अनुभव आवश्यक",
+                    experienceMatchHi: "योग्य (अनुभव पर्याप्त है)",
+                    experienceMatchEn: "Qualified",
+                    reasons: {
+                      skillAlignedHi: "कौशल मेल खाता है (Skill Aligned)",
+                      skillAlignedEn: "Skill aligned",
+                      wageHighHi: "मजदूरी अपेक्षा से बेहतर (+₹100/दिन)",
+                      wageHighEn: "Wage higher than expected (+₹100)",
+                      nearbyHi: "पास का स्थान (1.5 किमी दूर)",
+                      nearbyEn: "Nearby location (1.5 km)",
+                      verifiedHi: "सत्यापित नियोक्ता (99% स्कोर)",
+                      verifiedEn: "Verified employer (99% Score)",
+                      fastJoiningHi: "त्वरित जॉइनिंग उपलब्ध",
+                      fastJoiningEn: "Fast joining available"
+                    }
+                  },
+                  {
+                    id: "aim-2",
+                    titleEn: `Commercial ${regSelectedSkills.length > 0 ? regSelectedSkills[0] : "Mason"} Project`,
+                    titleHi: `वाणिज्यिक ${regSelectedSkills.length > 0 ? regSelectedSkills[0] : "राजमिस्त्री"} परियोजना`,
+                    employerEn: "Purvanchal Developers",
+                    employerHi: "पूर्वांचल डेवलपर्स",
+                    locationEn: "Golghar Complex, Gorakhpur",
+                    locationHi: "गोलघर परिसर, गोरखपुर",
+                    matchPercentage: 94,
+                    tradeMatchHi: "पूर्ण मिलान (100%)",
+                    tradeMatchEn: "Full Match (100%)",
+                    wageEn: "₹780 / Day",
+                    wageHi: "₹780 / प्रतिदिन",
+                    wageMatchHi: "अपेक्षा के अनुकूल (+₹30)",
+                    wageMatchEn: "Matches expectation (+₹30)",
+                    distanceEn: "3.2 km away",
+                    distanceHi: "3.2 किमी दूर",
+                    distanceMatchHi: "मध्यम दूरी",
+                    distanceMatchEn: "Moderate distance",
+                    trustScore: 95,
+                    trustMatchHi: "सत्यापित (95% ट्रस्ट)",
+                    trustMatchEn: "Verified (95% Trust)",
+                    experienceReqEn: "5+ Years Required",
+                    experienceReqHi: "5+ वर्ष अनुभव आवश्यक",
+                    experienceMatchHi: "योग्य (उत्कृष्ट मिलान)",
+                    experienceMatchEn: "Qualified (Perfect Match)",
+                    reasons: {
+                      skillAlignedHi: "कौशल अनुकूल (Skill Aligned)",
+                      skillAlignedEn: "Skill aligned",
+                      wageHighHi: "प्रतिस्पर्धी दैनिक मजदूरी",
+                      wageHighEn: "Competitive daily wage",
+                      nearbyHi: "शहर के केंद्र में (3.2 किमी)",
+                      nearbyEn: "In city center (3.2 km)",
+                      verifiedHi: "सत्यापित नियोक्ता (Aadhaar Verified)",
+                      verifiedEn: "Verified employer (Aadhaar Verified)",
+                      fastJoiningHi: "सप्ताह के भीतर जॉइनिंग",
+                      fastJoiningEn: "Fast joining available"
+                    }
+                  },
+                  {
+                    id: "aim-3",
+                    titleEn: `Urgent Repair & Maintenance`,
+                    titleHi: `त्वरित मरम्मत और रखरखाव`,
+                    employerEn: "Gorakhpur Civic Hub",
+                    employerHi: "गोरखपुर सिविक हब",
+                    locationEn: "Medical College Road",
+                    locationHi: "मेडिकल कॉलेज रोड",
+                    matchPercentage: 88,
+                    tradeMatchHi: "पूर्ण मिलान (100%)",
+                    tradeMatchEn: "Full Match (100%)",
+                    wageEn: "₹750 / Day",
+                    wageHi: "₹750 / प्रतिदिन",
+                    wageMatchHi: "अपेक्षा के अनुरूप (₹750)",
+                    wageMatchEn: "Matches expectation (₹750)",
+                    distanceEn: "4.8 km away",
+                    distanceHi: "4.8 किमी दूर",
+                    distanceMatchHi: "सुलभ दूरी",
+                    distanceMatchEn: "Accessible distance",
+                    trustScore: 92,
+                    trustMatchHi: "भरोसेमंद (92% ट्रस्ट)",
+                    trustMatchEn: "Trusted (92% Trust)",
+                    experienceReqEn: "2+ Years Required",
+                    experienceReqHi: "2+ वर्ष अनुभव आवश्यक",
+                    experienceMatchHi: "अधिकतम योग्यता",
+                    experienceMatchEn: "Overqualified",
+                    reasons: {
+                      skillAlignedHi: "सटीक कार्य मेल (Job Aligned)",
+                      skillAlignedEn: "Job aligned",
+                      wageHighHi: "मानक सरकारी दर मजदूरी",
+                      wageHighEn: "Standard government rate wage",
+                      nearbyHi: "कनेक्टेड मार्ग पर (4.8 किमी)",
+                      nearbyEn: "On connected route (4.8 km)",
+                      verifiedHi: "सत्यापित सरकारी ठेकेदार",
+                      verifiedEn: "Verified govt contractor",
+                      fastJoiningHi: "तत्काल आज ही शामिल हों",
+                      fastJoiningEn: "Immediate joining available"
+                    }
+                  }
+                ].map((job) => {
+                  const hasApplied = appliedJobs.includes(job.id);
+                  const isSaved = workerSavedJobsList.some(sj => sj.id === `sj-${job.id}`);
+                  const isViewingTrust = viewingTrustJobId === job.id;
+
+                  return (
+                    <div
+                      key={job.id}
+                      className="bg-slate-950/90 p-5 rounded-2xl border-2 border-slate-850 hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-4 text-left relative overflow-hidden group shadow-lg"
+                    >
+                      {/* Top Match Badge */}
+                      <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-600 text-slate-950 font-mono text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl border-l border-b border-amber-500/20 shadow flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 animate-pulse" />
+                        <span>{job.matchPercentage}% {lang === "hi" ? "मिलान" : "Match"}</span>
+                      </div>
+
+                      {/* Job Info */}
+                      <div className="space-y-3 pt-2">
+                        <div>
+                          <span className="text-[9px] text-amber-500 font-mono uppercase tracking-widest block font-bold">
+                            {lang === "hi" ? job.employerHi : job.employerEn}
+                          </span>
+                          <h5 className="text-sm font-extrabold text-white leading-snug mt-1">
+                            {lang === "hi" ? job.titleHi : job.titleEn}
+                          </h5>
+                          <div className="flex items-center gap-1 text-[11px] text-slate-400 mt-1 font-mono">
+                            <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                            <span>{lang === "hi" ? job.locationHi : job.locationEn} ({lang === "hi" ? job.distanceHi : job.distanceEn})</span>
+                          </div>
+                        </div>
+
+                        {/* Five-Fold Score Parameters (Match breakdown) */}
+                        <div className="bg-slate-900/70 p-3 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
+                          <div className="flex justify-between items-center text-[10px] border-b border-slate-800/40 pb-1.5">
+                            <span className="text-slate-500 uppercase">{lang === "hi" ? "कौशल्या मिलान / Trade Match:" : "Trade Match:"}</span>
+                            <span className="text-white font-bold">{lang === "hi" ? job.tradeMatchHi : job.tradeMatchEn}</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[10px] border-b border-slate-800/40 pb-1.5">
+                            <span className="text-slate-500 uppercase">{lang === "hi" ? "मजदूरी मिलान / Wage Match:" : "Wage Match:"}</span>
+                            <span className="text-emerald-400 font-bold">{lang === "hi" ? job.wageMatchHi : job.wageMatchEn}</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[10px] border-b border-slate-800/40 pb-1.5">
+                            <span className="text-slate-500 uppercase">{lang === "hi" ? "दूरी मिलान / Distance Match:" : "Distance Match:"}</span>
+                            <span className="text-amber-400 font-bold">{lang === "hi" ? job.distanceMatchHi : job.distanceMatchEn}</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[10px] border-b border-slate-800/40 pb-1.5">
+                            <span className="text-slate-500 uppercase">{lang === "hi" ? "नियोक्ता रेटिंग / Trust Match:" : "Trust Match:"}</span>
+                            <span className="text-teal-400 font-bold">{lang === "hi" ? job.trustMatchHi : job.trustMatchEn}</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[10px]">
+                            <span className="text-slate-500 uppercase">{lang === "hi" ? "अनुभव मिलान / Experience Match:" : "Experience Match:"}</span>
+                            <span className="text-blue-400 font-bold">{lang === "hi" ? job.experienceMatchHi : job.experienceMatchEn}</span>
+                          </div>
+                        </div>
+
+                        {/* Explainable Matching Reasons Block */}
+                        <div className="space-y-1 bg-slate-900/30 p-2.5 rounded-xl border border-slate-800/50">
+                          <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest block pb-0.5">
+                            {lang === "hi" ? "एआई मिलान के कारण / Matching Analysis:" : "AI Matching Analysis:"}
+                          </span>
+                          <div className="grid grid-cols-1 gap-1 text-[10px]">
+                            <div className="flex items-center gap-1.5 text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                              <span>{lang === "hi" ? job.reasons.skillAlignedHi : job.reasons.skillAlignedEn}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              <span>{lang === "hi" ? job.reasons.wageHighHi : job.reasons.wageHighEn}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
+                              <span>{lang === "hi" ? job.reasons.nearbyHi : job.reasons.nearbyEn}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                              <span>{lang === "hi" ? job.reasons.verifiedHi : job.reasons.verifiedEn}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                              <span>{lang === "hi" ? job.reasons.fastJoiningHi : job.reasons.fastJoiningEn}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Optional Expanded Trust Screen */}
+                        {isViewingTrust && (
+                          <div className="bg-slate-900/90 p-3 rounded-xl border border-teal-500/30 text-[11px] space-y-2 animate-fadeIn font-mono">
+                            <div className="flex items-center gap-1 text-teal-400 font-bold border-b border-slate-800 pb-1 uppercase text-[9px]">
+                              <ShieldCheck className="w-3.5 h-3.5 animate-pulse" />
+                              <span>{lang === "hi" ? "सत्यापित नियोक्ता प्रोफ़ाइल" : "Verified Employer Profile"}</span>
+                            </div>
+                            <div className="space-y-1 text-slate-300">
+                              <div className="flex justify-between">
+                                <span>Aadhaar/GSTIN Status:</span>
+                                <span className="text-emerald-400 font-bold">100% VERIFIED</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Timely Wage Payout Rate:</span>
+                                <span className="text-emerald-400 font-bold">98.7% (Excellent)</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Site Safety Compliance:</span>
+                                <span className="text-amber-400 font-bold">Grade A (Certified)</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Worker Retention Index:</span>
+                                <span className="text-teal-400 font-bold">4.9 / 5.0 Rating</span>
+                              </div>
+                            </div>
+                            <p className="text-[9px] text-slate-500 italic leading-snug pt-1">
+                              {lang === "hi" 
+                                ? "यह डेटा राष्ट्रीय लेबर इंटेलिजेंस ग्रिड द्वारा सुरक्षित है।" 
+                                : "Employer verification tracked and synced by National Labour Intelligence Grid."}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action Buttons row */}
+                      <div className="pt-3 border-t border-slate-900 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-emerald-400 font-mono">
+                            {lang === "hi" ? job.wageHi : job.wageEn}
+                          </span>
+                          
+                          <div className="flex items-center gap-1.5">
+                            {/* Save Opportunity Button */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const isAlreadySaved = workerSavedJobsList.some(sj => sj.id === `sj-${job.id}`);
+                                if (!isAlreadySaved) {
+                                  const newSaved = {
+                                    id: `sj-${job.id}`,
+                                    title: lang === "hi" ? job.titleHi : job.titleEn,
+                                    contractor: lang === "hi" ? job.employerHi : job.employerEn,
+                                    location: lang === "hi" ? job.locationHi : job.locationEn,
+                                    wage: lang === "hi" ? job.wageHi : job.wageEn
+                                  };
+                                  setWorkerSavedJobsList([newSaved, ...workerSavedJobsList]);
+                                  handleVoiceSpeak(
+                                    "नौकरी सुरक्षित कर ली गई है। आप इसे सहेजे गए कार्यों में देख सकते हैं।",
+                                    "Job saved successfully. You can view it in your saved opportunities."
+                                  );
+                                  alert(lang === "hi" ? "नौकरी सहेजी गई!" : "Job saved successfully!");
+                                } else {
+                                  alert(lang === "hi" ? "नौकरी पहले से ही सहेजी गई है।" : "Job is already saved.");
+                                }
+                              }}
+                              className={`p-1.5 rounded-lg border text-xs transition cursor-pointer flex items-center justify-center ${
+                                isSaved
+                                  ? "bg-slate-900 border-slate-850 text-amber-500 font-bold"
+                                  : "bg-slate-950 hover:bg-slate-900 border-slate-850 text-slate-400 hover:text-white"
+                              }`}
+                              title={lang === "hi" ? "नौकरी सहेजें" : "Save Job"}
+                            >
+                              <Bookmark className="w-3.5 h-3.5" />
+                              <span className="text-[9px] font-bold ml-1">{isSaved ? (lang === "hi" ? "सहेजी गई" : "Saved") : (lang === "hi" ? "सहेजें" : "Save")}</span>
+                            </button>
+
+                            {/* View Employer Trust */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setViewingTrustJobId(isViewingTrust ? null : job.id);
+                                handleVoiceSpeak(
+                                  `विवरण। ${job.employerHi} का ट्रस्ट स्कोर ${job.trustScore} प्रतिशत है। इनका समय पर भुगतान रिकॉर्ड उत्कृष्ट है।`,
+                                  `Details. ${job.employerEn} has a Trust Score of ${job.trustScore} percent with an excellent payout history.`
+                                );
+                              }}
+                              className={`p-1.5 rounded-lg border text-xs transition cursor-pointer flex items-center justify-center gap-1 ${
+                                isViewingTrust
+                                  ? "bg-teal-500/15 border-teal-500 text-teal-400"
+                                  : "bg-slate-950 hover:bg-slate-900 border-slate-850 text-slate-400 hover:text-white"
+                              }`}
+                            >
+                              <Shield className="w-3.5 h-3.5" />
+                              <span className="text-[9px] font-bold">{lang === "hi" ? "ट्रस्ट देखें" : "Trust"}</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Apply Now Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (hasApplied) return;
+                            setAppliedJobs([...appliedJobs, job.id]);
+                            const newApp = {
+                              id: `aj-aim-${Date.now()}`,
+                              title: lang === "hi" ? job.titleHi : job.titleEn,
+                              contractor: lang === "hi" ? job.employerHi : job.employerEn,
+                              location: lang === "hi" ? job.locationHi : job.locationEn,
+                              status: "Applied",
+                              date: "Just now"
+                            };
+                            setWorkerAppliedJobsList([newApp, ...workerAppliedJobsList]);
+                            handleVoiceSpeak(
+                              "आवेदन दर्ज किया गया। ठेकेदार को सूचना भेजी गई।",
+                              "Job application submitted successfully. Contractor notified via SMS."
+                            );
+                            alert(lang === "hi" ? "आवेदन सफलतापूर्वक भेजा गया! ठेकेदार को सूचित कर दिया गया है।" : "Application submitted! The contractor has been notified.");
+                          }}
+                          className={`w-full py-2 rounded-xl text-xs font-mono uppercase tracking-widest transition cursor-pointer flex items-center justify-center gap-1 ${
+                            hasApplied 
+                              ? "bg-slate-900 border border-slate-800 text-emerald-400 font-bold" 
+                              : "bg-amber-500 hover:bg-amber-600 text-slate-950 font-black"
                           }`}
                         >
                           {hasApplied 
