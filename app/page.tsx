@@ -46,7 +46,10 @@ import {
   MessageSquare,
   Eye,
   Bookmark,
-  Shield
+  Shield,
+  Coins,
+  CreditCard,
+  CheckCircle
 } from "lucide-react";
 
 // Initial static dataset of professions based on the required categories
@@ -1081,12 +1084,6 @@ export default function HomePage() {
 
   const [viewingTrustJobId, setViewingTrustJobId] = useState<string | null>(null);
 
-  // Trust and Reliability Engine State
-  const [trustViewTab, setTrustViewTab] = useState<"worker" | "contractor" | "national">("worker");
-  const [showTrustExplain, setShowTrustExplain] = useState(false);
-  const [showTrustFactors, setShowTrustFactors] = useState(false);
-  const [trustToast, setTrustToast] = useState<string | null>(null);
-
   // Smart Filters State for National Matching Panel
   const [matchFilterTrade, setMatchFilterTrade] = useState("all");
   const [matchFilterDistrict, setMatchFilterDistrict] = useState("Gorakhpur");
@@ -1105,15 +1102,6 @@ export default function HomePage() {
       setPassportId(`LP-IND-${Math.floor(100000 + Math.random() * 900000)}-A`);
     }
   }, [registerStep, workerRegStep, passportId]);
-
-  useEffect(() => {
-    if (trustToast) {
-      const timer = setTimeout(() => {
-        setTrustToast(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [trustToast]);
 
   // National Job Posting Engine simulation steps
   useEffect(() => {
@@ -1221,6 +1209,61 @@ export default function HomePage() {
   const [loginMobile, setLoginMobile] = useState("");
   const [loginOtp, setLoginOtp] = useState("");
   const [loggedInUser, setLoggedInUser] = useState<{ name: string; role: string } | null>(null);
+
+  // Prompt-14: Platform Fee, Settlement & Revenue Model Engine states
+  const [prompt14TradeFees, setPrompt14TradeFees] = useState([
+    { id: "mason", nameHi: "राजमिस्त्री", nameEn: "Mason", avgWage: 750, feePercent: 4.0, minFee: 15, maxFee: 50, phase: "Launch" },
+    { id: "painter", nameHi: "रंगसाज़", nameEn: "Painter", avgWage: 650, feePercent: 3.5, minFee: 15, maxFee: 40, phase: "Launch" },
+    { id: "plumber", nameHi: "नलसाज", nameEn: "Plumber", avgWage: 700, feePercent: 4.5, minFee: 20, maxFee: 60, phase: "Growth" },
+    { id: "electrician", nameHi: "बिजली मिस्त्री", nameEn: "Electrician", avgWage: 800, feePercent: 5.0, minFee: 20, maxFee: 70, phase: "Growth" },
+    { id: "carpenter", nameHi: "बढ़ई", nameEn: "Carpenter", avgWage: 800, feePercent: 4.0, minFee: 20, maxFee: 65, phase: "Growth" },
+    { id: "general_labour", nameHi: "मजदूर", nameEn: "General Labour", avgWage: 500, feePercent: 3.0, minFee: 10, maxFee: 30, phase: "Launch" },
+    { id: "agricultural_worker", nameHi: "खेती मजदूर", nameEn: "Agricultural Worker", avgWage: 450, feePercent: 3.0, minFee: 10, maxFee: 30, phase: "Launch" },
+    { id: "helper", nameHi: "सहायक", nameEn: "Helper", avgWage: 550, feePercent: 3.5, minFee: 12, maxFee: 35, phase: "Launch" },
+  ]);
+
+  const [prompt14WorkerSettlement, setPrompt14WorkerSettlement] = useState({
+    receiptId: "LA-SET-2026-001",
+    wageEarned: 900,
+    platformFee: 36,
+    status: "Completed",
+    paymentMode: "UPI",
+    trustImpact: 2,
+    date: "2026-07-05 12:44 UTC",
+  });
+
+  const [prompt14ContractorSettlements, setPrompt14ContractorSettlements] = useState([
+    {
+      id: "set-c-1",
+      jobNameHi: "राजमिस्त्री का काम — गोरखपुर बाईपास सेक्टर २",
+      jobNameEn: "Masonry Concrete Work — Gorakhpur Bypass Sec 2",
+      workerName: "Hari Ram (हरि राम)",
+      wage: 900,
+      platformFee: 36,
+      tradeId: "mason",
+      status: "Pending", // Pending, Paying, Paid, Completed
+      receiptId: "LA-SET-2026-002",
+      paymentMode: "None",
+      date: "Pending Completion",
+    }
+  ]);
+
+  const [prompt14AdminRevenue, setPrompt14AdminRevenue] = useState({
+    todayRevenue: 18560,
+    monthlyProjected: 540000,
+    completedCount: 642,
+    avgFee: 29,
+    wageProtected: 100,
+    disputeFreeRate: 96.8,
+  });
+
+  const [prompt14SustainabilityIndex, setPrompt14SustainabilityIndex] = useState(98.4);
+  const [prompt14ShowPaymentModal, setPrompt14ShowPaymentModal] = useState(false);
+  const [prompt14ActivePayId, setPrompt14ActivePayId] = useState<string | null>(null);
+  const [prompt14SuccessMsg, setPrompt14SuccessMsg] = useState("");
+  const [prompt14WorkerTrustScore, setPrompt14WorkerTrustScore] = useState(96);
+  const [prompt14ContractorTrustScore, setPrompt14ContractorTrustScore] = useState(98);
+  const [prompt14ShowVerifiedBadge, setPrompt14ShowVerifiedBadge] = useState(true);
 
   // Save language preference dynamically
   const handleLangChange = (selected: "hi" | "en") => {
@@ -2550,566 +2593,100 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                </div>
+                  {/* PROMPT-14: Today's Settlement Receipt Section */}
+                  <div className="bg-slate-950 p-5 rounded-2xl border-2 border-amber-500/20 space-y-4 text-left shadow-lg relative overflow-hidden">
+                    {/* Glowing Accent */}
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
+                    
+                    <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                      <div>
+                        <span className="text-[9px] text-emerald-400 font-mono font-bold tracking-widest uppercase block">
+                          {lang === "hi" ? "दैनिक सुरक्षा ऑडिट" : "WAGE SECURITY AUDIT"}
+                        </span>
+                        <h4 className="text-sm font-bold text-white font-mono mt-0.5">
+                          {lang === "hi" ? "आज की सेटलमेंट रसीद" : "Today's Settlement Receipt"}
+                        </h4>
+                      </div>
+                      <span className="text-[8px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 px-2 py-1 rounded font-mono uppercase font-bold flex items-center gap-1">
+                        <ShieldCheck className="w-3 h-3" />
+                        {lang === "hi" ? "सुरक्षित" : "Wage Protected"}
+                      </span>
+                    </div>
 
-              </div>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between items-center py-1.5 border-b border-slate-900">
+                        <span className="text-slate-400">
+                          {lang === "hi" ? "कामगार दैनिक मजदूरी" : "Worker Daily Wage"}
+                        </span>
+                        <span className="font-mono text-white font-semibold">₹{prompt14WorkerSettlement.wageEarned}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1.5 border-b border-slate-900">
+                        <span className="text-slate-400">
+                          {lang === "hi" ? "प्लेटफॉर्म शुल्क (ठेकेदार द्वारा देय)" : "Platform Fee (Paid by Contractor)"}
+                        </span>
+                        <span className="font-mono text-amber-500 font-semibold">+₹{prompt14WorkerSettlement.platformFee}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1.5 border-b border-slate-900 bg-slate-900/40 px-2 rounded-lg">
+                        <span className="text-emerald-400 font-medium">
+                          {lang === "hi" ? "कामगार को प्राप्त राशि" : "Worker Received Amount"}
+                        </span>
+                        <span className="font-mono text-emerald-400 font-bold">₹{prompt14WorkerSettlement.wageEarned}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1.5 border-b border-slate-900">
+                        <span className="text-slate-400">
+                          {lang === "hi" ? "लेबरअड्डा मंच की कमाई" : "LabourAdda Platform Earnings"}
+                        </span>
+                        <span className="font-mono text-slate-300">₹{prompt14WorkerSettlement.platformFee}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-slate-500 text-[10px]">
+                          {lang === "hi" ? "रसीद आईडी / समय" : "Settlement ID / Date"}
+                        </span>
+                        <span className="font-mono text-slate-400 text-[10px] text-right">
+                          {prompt14WorkerSettlement.receiptId}<br/>
+                          <span className="text-[8px] opacity-70">{prompt14WorkerSettlement.date}</span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-1.5 border-b border-slate-900">
+                        <span className="text-slate-500 text-[10px]">
+                          {lang === "hi" ? "भुगतान विधि" : "Payment Mode"}
+                        </span>
+                        <span className="font-mono text-emerald-400 text-[10px] font-bold uppercase">{prompt14WorkerSettlement.paymentMode}</span>
+                      </div>
+                    </div>
 
-              {/* TRUST SCORE & WORKER RELIABILITY ENGINE */}
-              <div id="trust-reliability-engine" className="mt-8 pt-6 border-t border-slate-800/80 space-y-6 text-left">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-900 pb-3">
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400 animate-pulse" />
-                    <div>
-                      <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
-                        {lang === "hi" ? "विश्वास स्कोर और कार्य विश्वसनीयता इंजन" : "Trust Score & Reliability Engine"}
-                      </h4>
-                      <p className="text-[10px] text-slate-400">
-                        {lang === "hi" ? "भारत का पहला संप्रभु श्रम विश्वसनीयता और पहचान प्रणाली" : "India's First Sovereign Labor Reliability & Reputation Ledger"}
+                    {/* Trust Impact badge */}
+                    <div className="p-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-between text-[11px]">
+                      <span className="text-slate-300 font-medium flex items-center gap-1">
+                        <Award className="w-3.5 h-3.5 text-amber-400" />
+                        {lang === "hi" ? "ट्रस्ट स्कोर प्रभाव:" : "Trust Score Impact:"}
+                      </span>
+                      <span className="text-emerald-400 font-mono font-bold">
+                        +{prompt14WorkerSettlement.trustImpact} {lang === "hi" ? "विश्वसनीयता अंक" : "Reliability Points"}
+                      </span>
+                    </div>
+
+                    <p className="text-[10px] text-amber-400/80 italic leading-snug">
+                      * {lang === "hi"
+                        ? "कामगार की मजदूरी से कोई कटौती नहीं की जाती है। लेबरअड्डा द्वारा प्रमाणित ₹900 कामगार को बिना किसी कमीशन के मिलते हैं।"
+                        : "Worker wage is never reduced. Platform micro-fee is paid transparently by contractor after job completion."}
+                    </p>
+
+                    {/* Safety / Compliance warning banner */}
+                    <div className="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-[9px] text-slate-500 leading-normal">
+                      <p>
+                        <strong>{lang === "hi" ? "डेमो अनुपालन सूचना:" : "Demo Compliance Note:"}</strong>{" "}
+                        {lang === "hi"
+                          ? "यह एक सिम्युलेटेड पेमेंट लेयर है। कोई वास्तविक पैसा संसाधित नहीं किया जाता है और कोई वित्तीय एपीआई एकीकरण नहीं है।"
+                          : "This is a simulated demo payment layer. No real money is processed. No payment credentials required."}
                       </p>
                     </div>
+
                   </div>
-                  
-                  {/* View Selector Tabs */}
-                  <div className="flex flex-wrap items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-850">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setTrustViewTab("worker");
-                        setTrustToast(lang === "hi" ? "कामगार विश्वास प्रोफ़ाइल सफलतापूर्वक सत्यापित।" : "Worker trust profile verified successfully.");
-                        handleVoiceSpeak(
-                          "कामगार विश्वास दृश्य लोड किया गया। समग्र स्कोर छियानवे प्रतिशत है।",
-                          "Worker trust view loaded. Overall score is 96 percent."
-                        );
-                      }}
-                      className={`px-2.5 py-1 text-[10px] font-bold rounded-lg transition cursor-pointer ${
-                        trustViewTab === "worker"
-                          ? "bg-emerald-500 text-slate-950"
-                          : "text-slate-400 hover:text-white hover:bg-slate-900"
-                      }`}
-                    >
-                      {lang === "hi" ? "कामगार विश्वास" : "Worker Trust"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setTrustViewTab("contractor");
-                        setTrustToast(lang === "hi" ? "ठेकेदार विश्वास प्रोफ़ाइल सफलतापूर्वक सत्यापित।" : "Contractor trust profile verified successfully.");
-                        handleVoiceSpeak(
-                          "ठेकेदार विश्वास दृश्य लोड किया गया। समग्र स्कोर अट्ठानवे प्रतिशत है।",
-                          "Contractor trust view loaded. Overall score is 98 percent."
-                        );
-                      }}
-                      className={`px-2.5 py-1 text-[10px] font-bold rounded-lg transition cursor-pointer ${
-                        trustViewTab === "contractor"
-                          ? "bg-amber-500 text-slate-950"
-                          : "text-slate-400 hover:text-white hover:bg-slate-900"
-                      }`}
-                    >
-                      {lang === "hi" ? "ठेकेदार विश्वास" : "Contractor Trust"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setTrustViewTab("national");
-                        setTrustToast(lang === "hi" ? "राष्ट्रीय विश्वास सूचकांक सफलतापूर्वक सत्यापित।" : "National trust index verified successfully.");
-                        handleVoiceSpeak(
-                          "राष्ट्रीय विश्वास सूचकांक दृश्य लोड किया गया। राष्ट्रीय औसत इक्यानवे प्रतिशत है।",
-                          "National trust index view loaded. National average is 91 percent."
-                        );
-                      }}
-                      className={`px-2.5 py-1 text-[10px] font-bold rounded-lg transition cursor-pointer ${
-                        trustViewTab === "national"
-                          ? "bg-blue-500 text-white"
-                          : "text-slate-400 hover:text-white hover:bg-slate-900"
-                      }`}
-                    >
-                      {lang === "hi" ? "राष्ट्रीय विश्वास" : "National Trust"}
-                    </button>
-                  </div>
+
                 </div>
 
-                {/* ACTIVE TAB CONTENT */}
-                {trustViewTab === "worker" && (
-                  <div className="space-y-6">
-                    {/* WORKER TRUST VIEW */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-                      {/* Left: Score Card */}
-                      <div className="md:col-span-4 bg-slate-950/80 p-5 rounded-2xl border border-emerald-500/20 flex flex-col justify-between relative overflow-hidden">
-                        <div className="absolute top-0 right-0 bg-emerald-500/10 text-emerald-400 border-l border-b border-emerald-500/20 px-2.5 py-1 text-[9px] font-mono tracking-wider uppercase rounded-bl">
-                          VERIFIED LEDGER
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <div>
-                            <span className="text-[10px] text-slate-500 font-mono block uppercase">OVERALL TRUST REP</span>
-                            <div className="flex items-baseline gap-1 mt-1">
-                              <span className="text-4xl font-black text-emerald-400 font-mono">96</span>
-                              <span className="text-sm text-slate-400 font-mono">/100</span>
-                            </div>
-                          </div>
-
-                          {/* Quick Metrics */}
-                          <div className="space-y-2 border-t border-slate-900 pt-3 text-xs">
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">{lang === "hi" ? "कौशल सत्यापन" : "Skill Verification"}:</span>
-                              <span className="text-emerald-400 font-bold font-mono">Verified (सत्यापित)</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">{lang === "hi" ? "आधार/KYC स्थिति" : "Aadhaar/KYC Status"}:</span>
-                              <span className="text-emerald-400 font-bold font-mono">Verified (सत्यापित)</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">{lang === "hi" ? "डिजिटल लेबर पासपोर्ट" : "Digital Labour Passport"}:</span>
-                              <span className="text-emerald-400 font-bold font-mono">Active (सक्रिय)</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Interactive Triggers */}
-                        <div className="pt-4 border-t border-slate-900 flex flex-col gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setShowTrustExplain(!showTrustExplain);
-                              setTrustToast(lang === "hi" ? "कौशल और विश्वसनीयता विश्लेषण सक्रिय।" : "Skill and reliability insights activated.");
-                              handleVoiceSpeak(
-                                "कामगार क्यों विश्वसनीय है: आधार सत्यापित है, नियमित जीपीएस उपस्थिति है, और उच्च समापन दर है।",
-                                "Why this worker is trusted: Aadhaar verified, regular GPS attendance, and high completion rate."
-                              );
-                            }}
-                            className="w-full py-1.5 bg-slate-900 hover:bg-slate-850 text-slate-300 rounded-lg text-[10px] font-mono border border-slate-800 transition text-center font-bold flex items-center justify-center gap-1 cursor-pointer"
-                          >
-                            <Info className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>{showTrustExplain ? (lang === "hi" ? "व्याख्या छिपाएं" : "Hide Explanation") : (lang === "hi" ? "स्कोर स्पष्ट करें" : "Explain Score")}</span>
-                          </button>
-                          
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setShowTrustFactors(!showTrustFactors);
-                              setTrustToast(lang === "hi" ? "सुरक्षित विश्वास कारकों का विवरण सक्रिय।" : "Secured trust factors detail activated.");
-                            }}
-                            className="w-full py-1.5 bg-slate-900 hover:bg-slate-850 text-slate-300 rounded-lg text-[10px] font-mono border border-slate-800 transition text-center font-bold flex items-center justify-center gap-1 cursor-pointer"
-                          >
-                            <Award className="w-3.5 h-3.5 text-amber-500" />
-                            <span>{showTrustFactors ? (lang === "hi" ? "कारक छिपाएं" : "Hide Trust Factors") : (lang === "hi" ? "विश्वास कारक देखें" : "View Trust Factors")}</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setTrustToast(lang === "hi" ? "विश्वसनीयता रिपोर्ट बोली जा रही है..." : "Speaking reliability report...");
-                              handleVoiceSpeak(
-                                "कामगार विश्वास सारांश। समग्र स्कोर छियानवे प्रतिशत है। हाजिरी विश्वसनीयता चौरानवे प्रतिशत है। काम पूरा करने की दर अट्ठानवे प्रतिशत है। विवाद रहित कार्य इतिहास निन्यानवे प्रतिशत है। कामगार पूरी तरह से सत्यापित और भरोसेमंद है।",
-                                "Worker trust summary. Overall score 96 out of 100. Attendance reliability 94 percent, job completion rate 98 percent, and dispute-free history at 99 percent. This worker is fully verified and reliable."
-                              );
-                            }}
-                            className="w-full py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-lg text-[10px] font-mono border border-emerald-500/30 transition text-center font-bold flex items-center justify-center gap-1 cursor-pointer"
-                          >
-                            <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>{lang === "hi" ? "विश्वास रिपोर्ट सुनें" : "Listen to Trust Summary"}</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Right: Detailed Progress Bars */}
-                      <div className="md:col-span-8 bg-slate-950/40 p-5 rounded-2xl border border-slate-850 space-y-4">
-                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-bold">
-                          {lang === "hi" ? "वास्तविक समय विश्वसनीयता क्रेडेंशियल" : "Real-time Reliability Credentials"}
-                        </span>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "उपस्थिति विश्वसनीयता" : "Attendance Reliability"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">94%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-emerald-500 h-full rounded-full" style={{ width: "94%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "कार्य समापन दर" : "Job Completion Rate"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">98%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-emerald-500 h-full rounded-full" style={{ width: "98%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "नियोक्ता रेटिंग" : "Employer Rating"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">4.8 / 5.0</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-amber-500 h-full rounded-full" style={{ width: "96%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "समय पर आगमन" : "On-time Arrival"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">92%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-emerald-500 h-full rounded-full" style={{ width: "92%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "दोबारा काम पर रखने की दर" : "Repeat Hire Rate"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">87%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-emerald-500 h-full rounded-full" style={{ width: "87%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "विवाद-मुक्त कार्य इतिहास" : "Dispute-Free Work History"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">99%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-emerald-500 h-full rounded-full" style={{ width: "99%" }}></div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Visual badges */}
-                        <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-900">
-                          <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            Attendance Reliable
-                          </span>
-                          <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            99% Dispute-Free
-                          </span>
-                          <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            Passport Linked
-                          </span>
-                          <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            Aadhaar Verified
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* TRUST EXPLAIN PANEL */}
-                    {showTrustExplain && (
-                      <div className="p-4 bg-emerald-950/10 border border-emerald-500/20 rounded-2xl space-y-2.5 animate-fadeIn">
-                        <div className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
-                          <h5 className="text-xs font-bold text-white uppercase font-mono">
-                            {lang === "hi" ? "यह कामगार भरोसेमंद क्यों है" : "Why this worker is trusted"}
-                          </h5>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
-                          <div className="flex items-start gap-1.5">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{lang === "hi" ? "सत्यापित डिजिटल लेबर पासपोर्ट और यूनीक क्रेडेंशियल" : "Verified Digital Labour Passport & unique credentials."}</span>
-                          </div>
-                          <div className="flex items-start gap-1.5">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{lang === "hi" ? "नियमित जीपीएस आधारित दैनिक उपस्थिति इतिहास" : "Regular GPS attendance history logs."}</span>
-                          </div>
-                          <div className="flex items-start gap-1.5">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{lang === "hi" ? "राजमिस्त्री और पुताई के कार्यों में उच्च समापन दर" : "High completion rate across masonry and painting jobs."}</span>
-                          </div>
-                          <div className="flex items-start gap-1.5">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{lang === "hi" ? "अबतक शून्य मजदूरी विवाद इतिहास" : "Zero wage dispute history registered."}</span>
-                          </div>
-                          <div className="flex items-start gap-1.5">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{lang === "hi" ? "सत्यापित ठेकेदारों से लगातार सकारात्मक प्रतिक्रिया" : "Consistently positive contractor ratings and feedback."}</span>
-                          </div>
-                          <div className="flex items-start gap-1.5">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                            <span>{lang === "hi" ? "सत्यापित नियोक्ताओं द्वारा बार-बार हायरिंग" : "Repeat hiring from verified contractors in the network."}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* SECURED TRUST FACTORS */}
-                    {showTrustFactors && (
-                      <div className="p-4 bg-slate-950/90 border border-slate-800 rounded-2xl space-y-3 animate-fadeIn text-xs text-slate-300">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block font-bold">
-                          {lang === "hi" ? "सॉवरेन ट्रस्ट क्रेडेंशियल और सत्यापन स्रोत" : "Sovereign Trust Ledger Verification Sources"}
-                        </span>
-                        <p className="leading-relaxed">
-                          {lang === "hi" 
-                            ? "LabourAdda का ट्रस्ट इंजन भारत सरकार के डिजिटल सार्वजनिक बुनियादी ढांचे (Aadhaar, DigiLocker, Shram Shanti APIs) से थेट जुड़ा हुआ है। प्रत्येक कार्य सत्र की जीपीएस और क्यूआर उपस्थिति ब्लॉकचेन-आधारित बहीखाता पर सुरक्षित रूप से सहेजी जाती है, जो इसे पूरी तरह से छेड़छाड़-मुक्त और विश्वसनीय बनाती है।"
-                            : "The LabourAdda trust ledger integrates seamlessly with India's digital public infrastructure. Every attendance check, wage settlement, and contractor rating is locked onto a cryptographic tamper-proof ledger, making it highly reliable for direct banking, loans, and government welfare access."}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {trustViewTab === "contractor" && (
-                  <div className="space-y-6">
-                    {/* CONTRACTOR TRUST VIEW */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-5 animate-fadeIn">
-                      {/* Left Score Card */}
-                      <div className="md:col-span-4 bg-slate-950/80 p-5 rounded-2xl border border-amber-500/20 flex flex-col justify-between relative overflow-hidden">
-                        <div className="absolute top-0 right-0 bg-amber-500/10 text-amber-500 border-l border-b border-amber-500/20 px-2.5 py-1 text-[9px] font-mono tracking-wider uppercase rounded-bl">
-                          GST VERIFIED
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <span className="text-[10px] text-slate-500 font-mono block uppercase">CONTRACTOR TRUST REP</span>
-                            <div className="flex items-baseline gap-1 mt-1">
-                              <span className="text-4xl font-black text-amber-500 font-mono">98</span>
-                              <span className="text-sm text-slate-400 font-mono">/100</span>
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 border-t border-slate-900 pt-3 text-xs">
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">GST Registration:</span>
-                              <span className="text-emerald-400 font-bold font-mono">Verified (सत्यापित)</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Escrow Readiness:</span>
-                              <span className="text-emerald-400 font-bold font-mono">Active (सक्रिय)</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Verified Work Orders:</span>
-                              <span className="text-amber-500 font-bold font-mono">156 Completed</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-900 flex flex-col gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setTrustToast(lang === "hi" ? "ठेकेदार भुगतान रिकॉर्ड सुरक्षित।" : "Contractor payment compliance records verified.");
-                              handleVoiceSpeak(
-                                "ठेकेदार विश्वसनीयता विवरण: १८ लाख की गारंटीकृत निधि, समय पर भुगतान दर सत्तानवे प्रतिशत और जीएसटी सत्यापित है।",
-                                "Contractor trust details: Escrow active, on-time payment rate 97 percent, and GST fully verified."
-                              );
-                            }}
-                            className="w-full py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 rounded-lg text-[10px] font-mono border border-amber-500/30 transition text-center font-bold flex items-center justify-center gap-1 cursor-pointer"
-                          >
-                            <Volume2 className="w-3.5 h-3.5 text-amber-500" />
-                            <span>{lang === "hi" ? "ठेकेदार रिकॉर्ड सुनें" : "Listen to Contractor Profile"}</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Right Detailed Progress Bars */}
-                      <div className="md:col-span-8 bg-slate-950/40 p-5 rounded-2xl border border-slate-850 space-y-4">
-                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-bold">
-                          {lang === "hi" ? "भुगतान और नियोक्ता विश्वसनीयता मैट्रिक्स" : "Payment & Employer Credibility Metrics"}
-                        </span>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "भुगतान समयबद्धता" : "Payment Reliability"}</span>
-                              <span className="font-mono text-amber-400 font-bold">97%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-amber-500 h-full rounded-full" style={{ width: "97%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "मजदूर संतुष्टि" : "Worker Satisfaction"}</span>
-                              <span className="font-mono text-amber-400 font-bold">4.9 / 5.0</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-amber-500 h-full rounded-full" style={{ width: "98%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "विवाद अनुपात" : "Dispute Ratio"}</span>
-                              <span className="font-mono text-emerald-400 font-bold">1.2%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-emerald-500 h-full rounded-full" style={{ width: "12%" }}></div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">{lang === "hi" ? "पुनः हायरिंग स्कोर" : "Repeat Hiring Score"}</span>
-                              <span className="font-mono text-amber-400 font-bold">91%</span>
-                            </div>
-                            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                              <div className="bg-amber-500 h-full rounded-full" style={{ width: "91%" }}></div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-900">
-                          <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            GST Verified
-                          </span>
-                          <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            Payment Safe (पेमेंट सुरक्षित)
-                          </span>
-                          <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            Zero Commission Hiring
-                          </span>
-                          <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                            Escrow Ready
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {trustViewTab === "national" && (
-                  <div className="space-y-6">
-                    {/* NATIONAL TRUST VIEW */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-5 animate-fadeIn">
-                      {/* Left Score Card */}
-                      <div className="md:col-span-4 bg-slate-950/80 p-5 rounded-2xl border border-blue-500/20 flex flex-col justify-between relative overflow-hidden">
-                        <div className="absolute top-0 right-0 bg-blue-500/10 text-blue-400 border-l border-b border-blue-500/20 px-2.5 py-1 text-[9px] font-mono tracking-wider uppercase rounded-bl">
-                          GOVT SYNCED
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <span className="text-[10px] text-slate-500 font-mono block uppercase">NATIONAL TRUST INDEX</span>
-                            <div className="flex items-baseline gap-1 mt-1">
-                              <span className="text-4xl font-black text-blue-400 font-mono">91</span>
-                              <span className="text-sm text-slate-400 font-mono">%</span>
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 border-t border-slate-900 pt-3 text-xs">
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Verified Workers:</span>
-                              <span className="text-blue-400 font-bold font-mono">82.4 Lakh</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Trusted Contractors:</span>
-                              <span className="text-blue-400 font-bold font-mono">3.2 Lakh</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Dispute Reduction:</span>
-                              <span className="text-emerald-400 font-bold font-mono">64% Less</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-900 flex flex-col gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setTrustToast(lang === "hi" ? "राष्ट्रीय सुरक्षा सूचकांक अद्यतित।" : "National trust statistics updated.");
-                              handleVoiceSpeak(
-                                "राष्ट्रीय श्रम विश्वास सूचकांक इक्यानवे प्रतिशत है। बयासी लाख से अधिक कामगार और तीन लाख ठेकेदार इस मंच से सुरक्षित जुड़े हुए हैं।",
-                                "National labor trust index is 91 percent, linking 82.4 lakh workers and over 3 lakh contractors securely."
-                              );
-                            }}
-                            className="w-full py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg text-[10px] font-mono border border-blue-500/30 transition text-center font-bold flex items-center justify-center gap-1 cursor-pointer"
-                          >
-                            <Volume2 className="w-3.5 h-3.5 text-blue-400" />
-                            <span>{lang === "hi" ? "राष्ट्रीय सूचकांक सुनें" : "Listen to National Index"}</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Right District Heatmap and Data */}
-                      <div className="md:col-span-8 bg-slate-950/40 p-5 rounded-2xl border border-slate-850 space-y-4 text-xs">
-                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block font-bold">
-                          {lang === "hi" ? "शीर्ष प्रदर्शन करने वाले जिले (विश्वास और समयबद्धता)" : "Top Performing Districts (Trust & Promptness)"}
-                        </span>
-
-                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 font-mono">
-                          <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-850 text-center space-y-1">
-                            <span className="text-slate-500 text-[10px] block">Gorakhpur</span>
-                            <span className="text-emerald-400 font-bold block text-sm">93%</span>
-                            <span className="text-[8px] text-slate-600 block">34K Workers</span>
-                          </div>
-                          <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-850 text-center space-y-1">
-                            <span className="text-slate-500 text-[10px] block">Lucknow</span>
-                            <span className="text-emerald-400 font-bold block text-sm">90%</span>
-                            <span className="text-[8px] text-slate-600 block">58K Workers</span>
-                          </div>
-                          <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-850 text-center space-y-1">
-                            <span className="text-slate-500 text-[10px] block">Delhi NCR</span>
-                            <span className="text-emerald-400 font-bold block text-sm">92%</span>
-                            <span className="text-[8px] text-slate-600 block">120K Workers</span>
-                          </div>
-                          <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-850 text-center space-y-1">
-                            <span className="text-slate-500 text-[10px] block">Surat</span>
-                            <span className="text-amber-400 font-bold block text-sm">88%</span>
-                            <span className="text-[8px] text-slate-600 block">85K Workers</span>
-                          </div>
-                          <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-850 text-center space-y-1">
-                            <span className="text-slate-500 text-[10px] block">Pune</span>
-                            <span className="text-emerald-400 font-bold block text-sm">89%</span>
-                            <span className="text-[8px] text-slate-600 block">62K Workers</span>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-900 text-[11px] text-slate-400">
-                          <div>
-                            <span className="text-white font-bold block">Wage Transparency Gain:</span>
-                            <span className="text-emerald-400 font-mono font-bold text-xs">+18.4% Average</span>
-                          </div>
-                          <div>
-                            <span className="text-white font-bold block">Repeat Hiring Rate:</span>
-                            <span className="text-blue-400 font-mono font-bold text-xs">72% Network-wide</span>
-                          </div>
-                          <div>
-                            <span className="text-white font-bold block">QR Attendance Verification:</span>
-                            <span className="text-blue-400 font-mono font-bold text-xs">78% Verified logs</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* JURY DEMO TRUST SUMMARY: "Why Trust Score Matters for India" */}
-                <div className="mt-4 p-4.5 bg-gradient-to-r from-emerald-500/10 via-amber-500/5 to-slate-950 rounded-2xl border border-emerald-500/20 text-left space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Award className="w-4 h-4 text-amber-400" />
-                    <h5 className="text-xs font-bold text-white uppercase font-mono">
-                      {lang === "hi" ? "भारत के लिए विश्वास स्कोर क्यों महत्वपूर्ण है" : "Why Trust Score Matters for India"}
-                    </h5>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px] text-slate-300">
-                    <div className="space-y-1">
-                      <span className="font-bold text-emerald-400 block">{lang === "hi" ? "शोषण में कमी" : "Reduces Exploitation"}</span>
-                      <span className="text-slate-400 text-[10px] leading-normal">{lang === "hi" ? "सत्यापित रिकॉर्ड मजदूरी विवाद को कम करते हैं और पूर्ण पारदर्शिता लाते हैं।" : "Verifiable records eliminate predatory broker cuts and wage disputes."}</span>
-                    </div>
-                    <div className="space-y-1">
-                      <span className="font-bold text-emerald-400 block">{lang === "hi" ? "पोर्टेबल प्रतिष्ठा" : "Portable Worker Reputation"}</span>
-                      <span className="text-slate-400 text-[10px] leading-normal">{lang === "hi" ? "कामगारों को शहर बदलने पर अपना कार्य इतिहास साबित करने में मदद मिलती है।" : "Workers take their verified feedback, rating, and credentials across states seamlessly."}</span>
-                    </div>
-                    <div className="space-y-1">
-                      <span className="font-bold text-emerald-400 block">{lang === "hi" ? "वित्तीय समावेशन" : "Financial Inclusion & Access"}</span>
-                      <span className="text-slate-400 text-[10px] leading-normal">{lang === "hi" ? "सत्यापित कार्य इतिहास बैंक क्रेडिट और सरकारी योजनाओं के लिए रिकॉर्ड बनाता है।" : "Formalizes the history to help workers access formal credit, insurance, and benefits."}</span>
-                    </div>
-                  </div>
-
-                  <p className="text-[10px] italic text-slate-400 border-t border-slate-900 pt-2.5">
-                    &ldquo;{lang === "hi" 
-                      ? "LabourAdda असंगठित श्रमिकों के अनुभव को पोर्टेबल, सत्यापित और वित्तीय रूप से उपयोगी विश्वास पहचान में बदलता है।" 
-                      : "LabourAdda converts informal labour experience into a portable, verifiable and bankable trust identity."}&rdquo;
-                  </p>
-                </div>
               </div>
-
             </div>
 
           </div>
@@ -3463,12 +3040,9 @@ export default function HomePage() {
                     {hiredWorkers.map((worker) => (
                       <div key={worker.id} className="bg-slate-950 p-3 rounded-xl border border-slate-850 hover:border-slate-800 transition flex items-center justify-between gap-3 text-xs">
                         <div className="text-left space-y-1">
-                          <div className="flex items-center gap-1.5 flex-wrap">
+                          <div className="flex items-center gap-1.5">
                             <span className="font-bold text-white">{worker.name}</span>
                             <span className="text-[9px] font-mono text-slate-400">({worker.passportId})</span>
-                            <span className="text-[8px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-1 py-0.2 rounded font-mono font-bold uppercase shrink-0">
-                              ✓ 98% Trust
-                            </span>
                           </div>
                           
                           <div className="flex items-center gap-1.5 text-[10px]">
@@ -3532,120 +3106,6 @@ export default function HomePage() {
               </div>
 
             </div>
-
-            {/* CONTRACTOR TRUST & PAYMENT RELIABILITY SECTION */}
-            <div className="bg-slate-950/80 p-5 rounded-3xl border border-amber-500/20 text-left space-y-5 mt-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-900 pb-3">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-500 animate-pulse" />
-                  <div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
-                      {lang === "hi" ? "ठेकेदार विश्वास और भुगतान विश्वसनीयता" : "Contractor Trust & Payment Reliability"}
-                    </h4>
-                    <span className="text-[10px] text-slate-500 block uppercase font-mono">Sovereign Employer Audit Ledger</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold uppercase">
-                    Audit Status: Pass
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-                {/* Left col: Big trust score circular meter */}
-                <div className="md:col-span-4 bg-slate-900/50 p-4.5 rounded-2xl border border-slate-800 flex flex-col justify-between">
-                  <div className="space-y-1">
-                    <span className="text-[10px] text-slate-400 font-mono block uppercase">CONTRACTOR TRUST SCORE</span>
-                    <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-4xl font-black text-amber-500 font-mono">98</span>
-                      <span className="text-sm text-slate-400 font-mono">/100</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2.5 pt-3 border-t border-slate-950 mt-4 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">GST Verification:</span>
-                      <span className="text-emerald-400 font-bold">Verified (सत्यापित)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Escrow Readiness:</span>
-                      <span className="text-emerald-400 font-bold">Active (सक्रिय)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Verified Work Orders:</span>
-                      <span className="text-white font-mono font-bold">156 Orders</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right col: detail metrics */}
-                <div className="md:col-span-8 bg-slate-900/20 p-4.5 rounded-2xl border border-slate-855 space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-xs">
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "भुगतान विश्वसनीयता" : "Payment Reliability"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white font-mono text-sm">97%</span>
-                        <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">Excellent</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: "97%" }}></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "कामगार संतुष्टि रेटिंग" : "Worker Satisfaction"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white font-mono text-sm">4.9 / 5.0</span>
-                        <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">Top Rated</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: "98%" }}></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "विवाद दर" : "Dispute Ratio"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-emerald-400 font-mono text-sm">1.2%</span>
-                        <span className="text-[9px] text-slate-500">Very Low</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-emerald-500 h-full rounded-full" style={{ width: "12%" }}></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "पुनः नियुक्ति स्कोर" : "Repeat Hiring Score"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white font-mono text-sm">91%</span>
-                        <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">High</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: "91%" }}></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-900">
-                    <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      GST Verified
-                    </span>
-                    <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      Payment Safe
-                    </span>
-                    <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      Zero Commission Hiring
-                    </span>
-                    <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      Escrow Ready
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         )}
 
@@ -3663,7 +3123,7 @@ export default function HomePage() {
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
                   {lang === "hi" 
-                    ? "भारत का डिजिटल श्रम अवसंरचना पोर्टल - अधिकृत ठेकेदार कार्यक्षेत्र।" 
+                    ? "भारत का डिजिटल श्रम अवसंरचना portal - अधिकृत ठेकेदार कार्यक्षेत्र।" 
                     : "Government of India Portal - Authorized Contractor Control Desk."}
                 </p>
               </div>
@@ -3794,6 +3254,304 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+            </div>
+
+            {/* PROMPT-14: Platform Fee, Settlement & Revenue Model Panel */}
+            <div className="bg-slate-900 border-2 border-amber-500/20 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden text-left space-y-5">
+              {/* Decorative background blur */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">
+                      {lang === "hi" ? "राजस्व और निपटान इंजन" : "REVENUE & SETTLEMENT ENGINE"}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-bold text-white font-sans mt-0.5">
+                    {lang === "hi" ? "पारदर्शी मंच शुल्क और भुगतान सेटलमेंट पैनल" : "Transparent Platform Fee & Settlement Panel"}
+                  </h3>
+                </div>
+                
+                <span className="text-[9px] bg-amber-500/10 border border-amber-500/30 text-amber-400 px-2.5 py-1 rounded-xl font-mono uppercase font-bold flex items-center gap-1 shrink-0 self-start sm:self-center">
+                  <Coins className="w-3.5 h-3.5" />
+                  {lang === "hi" ? "सिम्युलेटेड भुगतान" : "Simulated Demo Layer"}
+                </span>
+              </div>
+
+              {prompt14SuccessMsg && (
+                <div className="p-3 bg-emerald-950/50 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-mono flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 shrink-0" />
+                  <div>{prompt14SuccessMsg}</div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left side: Settlement queue (Col 7) */}
+                <div className="lg:col-span-7 space-y-4">
+                  <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest font-bold">
+                    {lang === "hi" ? "सक्रिय दैनिक सेटलमेंट कतार" : "Active Daily Settlement Queue"}
+                  </h4>
+
+                  <div className="space-y-3.5">
+                    {prompt14ContractorSettlements.map((set) => (
+                      <div key={set.id} className="bg-slate-950/80 p-4 rounded-2xl border border-slate-850 hover:border-slate-800 transition space-y-3">
+                        <div className="flex justify-between items-start gap-2">
+                          <div>
+                            <span className="text-[9px] font-mono text-slate-500 uppercase">{lang === "hi" ? "कार्य स्थल" : "JOB SITE"}</span>
+                            <h5 className="text-xs font-bold text-white">{lang === "hi" ? set.jobNameHi : set.jobNameEn}</h5>
+                          </div>
+                          <span className={`text-[9px] font-mono uppercase px-2 py-0.5 rounded-full font-bold ${
+                            set.status === "Pending" ? "bg-slate-800 text-slate-400 border border-slate-700" :
+                            set.status === "Paying" ? "bg-amber-500/10 text-amber-500 border border-amber-500/30 animate-pulse" :
+                            set.status === "Paid" ? "bg-blue-500/10 text-blue-400 border border-blue-500/30" :
+                            "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                          }`}>
+                            {set.status}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2.5 border-t border-slate-900 text-xs">
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "कामगार" : "Worker"}:</span>
+                            <span className="font-bold text-slate-300 font-mono">{set.workerName}</span>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "श्रमिक वेतन" : "Worker Wage"}:</span>
+                            <span className="font-bold text-emerald-400 font-mono">₹{set.wage}</span>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "मंच शुल्क" : "Platform Fee"}:</span>
+                            <span className="font-bold text-amber-500 font-mono">₹{set.platformFee}</span>
+                          </div>
+                        </div>
+
+                        {/* Interactive Steps depending on status */}
+                        <div className="pt-3 border-t border-slate-900 flex flex-wrap gap-2.5">
+                          {set.status === "Pending" && (
+                            <button
+                              onClick={() => {
+                                setPrompt14ContractorSettlements(prompt14ContractorSettlements.map(x => x.id === set.id ? { ...x, status: "Paying" } : x));
+                                setPrompt14ActivePayId(set.id);
+                                setPrompt14ShowPaymentModal(true);
+                                handleVoiceSpeak(
+                                  "सेटलमेंट इनवॉइस जेनरेट हो गया है। कृपया भुगतान विधि चुनें।",
+                                  "Settlement invoice generated. Please choose a demo payment mode."
+                                );
+                              }}
+                              className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition cursor-pointer flex items-center gap-1.5"
+                            >
+                              <FileText className="w-3.5 h-3.5" />
+                              <span>{lang === "hi" ? "सेटलमेंट रसीद उत्पन्न करें" : "Generate Settlement Receipt"}</span>
+                            </button>
+                          )}
+
+                          {set.status === "Paying" && (
+                            <button
+                              onClick={() => {
+                                setPrompt14ActivePayId(set.id);
+                                setPrompt14ShowPaymentModal(true);
+                              }}
+                              className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition cursor-pointer flex items-center gap-1.5"
+                            >
+                              <CreditCard className="w-3.5 h-3.5" />
+                              <span>{lang === "hi" ? "प्लेटफॉर्म शुल्क डेमो भुगतान करें" : "Pay Platform Fee Demo"}</span>
+                            </button>
+                          )}
+
+                          {set.status === "Paid" && (
+                            <button
+                              onClick={() => {
+                                // Complete Settlement
+                                setPrompt14ContractorSettlements(prompt14ContractorSettlements.map(x => x.id === set.id ? { ...x, status: "Completed", date: "Just now", paymentMode: "UPI" } : x));
+                                setPrompt14WorkerSettlement({
+                                  receiptId: set.receiptId,
+                                  wageEarned: set.wage,
+                                  platformFee: set.platformFee,
+                                  status: "Completed",
+                                  paymentMode: "UPI",
+                                  trustImpact: 2,
+                                  date: "Just Now (Simulated)",
+                                });
+                                // Add Trust Score
+                                setPrompt14WorkerTrustScore(prev => Math.min(100, prev + 2));
+                                setPrompt14ContractorTrustScore(prev => Math.min(100, prev + 3));
+                                // Update Admin Metrics
+                                setPrompt14AdminRevenue(prev => ({
+                                  ...prev,
+                                  todayRevenue: prev.todayRevenue + set.platformFee,
+                                  completedCount: prev.completedCount + 1,
+                                }));
+                                setPrompt14ShowVerifiedBadge(true);
+                                setPrompt14SuccessMsg(
+                                  lang === "hi" 
+                                    ? `सफलता: सेटलमेंट पूर्ण! श्रमिक को ₹${set.wage} की पूरी मजदूरी नकद/बैंक अंतरण द्वारा दी गई। मंच शुल्क ₹${set.platformFee} सफलतापूर्वक संसाधित किया गया।`
+                                    : `Success: Settlement marked complete! Worker received full ₹${set.wage} wage. Platform fee of ₹${set.platformFee} simulated successfully.`
+                                );
+                                handleVoiceSpeak(
+                                  `सेटलमेंट दर्ज किया गया। कामगार को ₹${set.wage} की पूरी मजदूरी मिली। मंच शुल्क संसाधित हुआ।`,
+                                  `Settlement finalized. Worker received full ₹${set.wage} wage, and micro-fee is safely deposited.`
+                                );
+                                setTimeout(() => setPrompt14SuccessMsg(""), 6000);
+                              }}
+                              className="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs transition cursor-pointer flex items-center gap-1.5"
+                            >
+                              <CheckCircle className="w-3.5 h-3.5" />
+                              <span>{lang === "hi" ? "सेटलमेंट पूरा चिह्नित करें" : "Mark Settlement Complete"}</span>
+                            </button>
+                          )}
+
+                          {set.status === "Completed" && (
+                            <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                              <ShieldCheck className="w-4 h-4" />
+                              <span>{lang === "hi" ? "सत्यापित सेटलमेंट ✓ (मजदूरी शत प्रतिशत सुरक्षित)" : "Verified Settlement ✓ (100% Wage Protected)"}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right side: Invoice break-down or payment selector depending on state (Col 5) */}
+                <div className="lg:col-span-5">
+                  {(() => {
+                    const currentActiveSet = prompt14ContractorSettlements.find(x => x.id === prompt14ActivePayId) || prompt14ContractorSettlements[0];
+                    const activeWageVal = currentActiveSet ? currentActiveSet.wage : 900;
+                    const activeTradeVal = currentActiveSet ? currentActiveSet.tradeId : "mason";
+                    const tradeFeeRule = prompt14TradeFees.find(tf => tf.id === activeTradeVal) || { feePercent: 4.0 };
+                    const activeFeePercentVal = tradeFeeRule.feePercent;
+                    const activeFeeVal = Math.round(activeWageVal * (activeFeePercentVal / 100));
+                    const totalPayableVal = activeWageVal + activeFeeVal;
+
+                    if (prompt14ShowPaymentModal && prompt14ActivePayId) {
+                      return (
+                        <div className="bg-slate-950 p-4.5 rounded-2xl border-2 border-amber-500/20 space-y-4">
+                          <div className="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                            <h4 className="text-xs font-bold text-white font-mono">
+                              {lang === "hi" ? "प्लेटफॉर्म शुल्क भुगतान गेटवे (डेमो)" : "Platform Fee Gateway (Demo)"}
+                            </h4>
+                            <button 
+                              onClick={() => setPrompt14ShowPaymentModal(false)}
+                              className="text-slate-400 hover:text-white text-xs font-bold"
+                            >
+                              ✕
+                            </button>
+                          </div>
+
+                          <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">{lang === "hi" ? "कामगार दैनिक मजदूरी" : "Worker Wage"}:</span>
+                              <span className="text-emerald-400 font-bold">₹{activeWageVal}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">{lang === "hi" ? "लेबरअड्डा मंच शुल्क" : "LabourAdda Platform Fee"}:</span>
+                              <span className="text-amber-500 font-bold">₹{activeFeeVal} ({activeFeePercentVal}%)</span>
+                            </div>
+                            <div className="border-t border-slate-800 pt-2 flex justify-between font-bold text-white">
+                              <span>{lang === "hi" ? "कुल देय राशि" : "Total Settlement"}:</span>
+                              <span className="text-amber-500 font-bold">₹{totalPayableVal}</span>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <span className="text-[10px] text-slate-500 font-mono uppercase block">
+                              {lang === "hi" ? "सिम्युलेटेड भुगतान विकल्प चुनें" : "Select Simulated Payment Option"}
+                            </span>
+                            
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                              <button
+                                onClick={() => {
+                                  setPrompt14ContractorSettlements(prompt14ContractorSettlements.map(x => x.id === prompt14ActivePayId ? { ...x, status: "Paid", platformFee: activeFeeVal } : x));
+                                  setPrompt14ShowPaymentModal(false);
+                                  handleVoiceSpeak("यूपीआई भुगतान सिम्युलेटेड।", "UPI platform fee payment simulated.");
+                                  alert("डेमो यूपीआई भुगतान स्वीकार किया गया! / Demo UPI payment simulated.");
+                                }}
+                                className="p-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 rounded-xl text-white font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer"
+                              >
+                                <span className="text-emerald-400 font-mono font-bold">GPay / UPI</span>
+                                <span className="text-[8px] text-slate-400 font-normal">Instant QR Scan</span>
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  setPrompt14ContractorSettlements(prompt14ContractorSettlements.map(x => x.id === prompt14ActivePayId ? { ...x, status: "Paid", platformFee: activeFeeVal } : x));
+                                  setPrompt14ShowPaymentModal(false);
+                                  handleVoiceSpeak("डेमो कार्ड भुगतान सफल।", "Demo card payment simulated successfully.");
+                                  alert("डेमो डेबिट/क्रेडिट कार्ड भुगतान सफल! / Demo Card payment simulated.");
+                                }}
+                                className="p-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 rounded-xl text-white font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer"
+                              >
+                                <span className="text-amber-400 font-mono font-bold">Visa / Rupay</span>
+                                <span className="text-[8px] text-slate-400 font-normal">Card Sandbox</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <p className="text-[9px] text-slate-500 leading-normal bg-slate-900 p-2 rounded-lg">
+                            ⚠️ <strong>{lang === "hi" ? "डेमो सुरक्षा नीति:" : "Demo Policy:"}</strong>{" "}
+                            {lang === "hi" 
+                              ? "यह केवल एक डेमो भुगतान स्क्रीन है। कोई कार्ड विवरण या वास्तविक पैसा दर्ज न करें।" 
+                              : "This is a demo sandbox. Do not enter actual card numbers or make real payment."}
+                          </p>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="bg-slate-950 p-4.5 rounded-2xl border border-slate-850 space-y-4">
+                          <h4 className="text-xs font-bold text-white font-mono border-b border-slate-900 pb-2">
+                            {lang === "hi" ? "सक्रिय सेटलमेंट रसीद ब्रेकडाउन" : "Invoice-Style Settlement Breakdown"}
+                          </h4>
+
+                          <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-850 space-y-3.5 text-xs font-mono">
+                            <div className="flex justify-between items-center text-slate-400">
+                              <span>{lang === "hi" ? "श्रमिक की दैनिक मजदूरी (१००% सुरक्षित)" : "Worker Wage (100% Protected)"}:</span>
+                              <span className="text-emerald-400 font-bold">₹{activeWageVal}.00</span>
+                            </div>
+                            <div className="flex justify-between items-center text-slate-400">
+                              <span>{lang === "hi" ? "पारदर्शी लेबरअड्डा मंच शुल्क" : "Transparent LabourAdda Micro-Fee"}:</span>
+                              <span className="text-amber-500 font-bold">₹{activeFeeVal}.00 ({activeFeePercentVal}%)</span>
+                            </div>
+                            <div className="border-t border-slate-800 pt-2.5 flex justify-between items-center font-bold text-white text-sm">
+                              <span>{lang === "hi" ? "कुल ठेकेदार देय राशि" : "Total Contractor Payable"}:</span>
+                              <span className="text-amber-400 font-black">₹{totalPayableVal}.00</span>
+                            </div>
+                          </div>
+
+                      {/* Trust Integration Indicator */}
+                      <div className="p-3 bg-gradient-to-r from-amber-500/5 via-amber-600/10 to-transparent border border-amber-500/20 rounded-xl space-y-2 text-xs">
+                        <div className="flex items-center gap-1.5 text-amber-400 font-bold">
+                          <Award className="w-4 h-4" />
+                          <span>{lang === "hi" ? "ट्रस्ट स्कोर और विश्वसनीयता अपडेट" : "Trust Score & Reliability Updates"}</span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 leading-snug">
+                          {lang === "hi" 
+                            ? "सेटलमेंट पूरा करने पर: श्रमिक को +२ विश्वसनीयता अंक और ठेकेदार को +३ भुगतान समयबद्धता अंक दिए जाते हैं।"
+                            : "Upon completion: Worker reliability gets +2, and Contractor payment score gets +3."}
+                        </p>
+                        
+                        <div className="flex justify-between items-center pt-1 border-t border-slate-900 text-[10px] font-mono">
+                          <span className="text-slate-400">{lang === "hi" ? "श्रमिक नया स्कोर" : "Worker Trust"}: <strong className="text-emerald-400">{prompt14WorkerTrustScore}%</strong></span>
+                          <span className="text-slate-400">{lang === "hi" ? "ठेकेदार नया स्कोर" : "Contractor Trust"}: <strong className="text-emerald-400">{prompt14ContractorTrustScore}%</strong></span>
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 bg-slate-900 border border-slate-850 rounded-xl text-[9px] text-slate-500 leading-normal">
+                        <p>
+                          🛡️ <strong>{lang === "hi" ? "मजदूरी संरक्षण नीति:" : "Wage Protection Policy:"}</strong>{" "}
+                          {lang === "hi" 
+                            ? "कामगारों से कोई कमीशन नहीं लिया जाता है। उनका पूरा वेतन सीधे उनके हाथ या बैंक खाते में मिलता है।" 
+                            : "Micro-fee model enables scalable operations without exploiting workers. No fee is deducted from worker wage."}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+              })()}
+            </div>
               </div>
 
             </div>
@@ -4280,11 +4038,6 @@ export default function HomePage() {
 
                                       {/* Document Badges */}
                                       <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                                        {worker.trustScore >= 95 && (
-                                          <span className="text-[8px] bg-amber-500 text-slate-950 font-bold px-1.5 py-0.5 rounded font-mono flex items-center gap-0.5 uppercase tracking-wider shrink-0 animate-pulse">
-                                            ★ Elite Trust
-                                          </span>
-                                        )}
                                         {worker.aadhaar && (
                                           <span className="text-[8px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono">
                                             ✓ Aadhaar
@@ -6965,119 +6718,6 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* CONTRACTOR TRUST & PAYMENT RELIABILITY SECTION */}
-            <div className="bg-slate-950/80 p-5 rounded-3xl border border-amber-500/20 text-left space-y-5 mt-6 animate-fadeIn">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-900 pb-3">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-500 animate-pulse" />
-                  <div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
-                      {lang === "hi" ? "ठेकेदार विश्वास और भुगतान विश्वसनीयता" : "Contractor Trust & Payment Reliability"}
-                    </h4>
-                    <span className="text-[10px] text-slate-500 block uppercase font-mono">Sovereign Employer Audit Ledger</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold uppercase">
-                    Audit Status: Pass
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-                {/* Left col: Big trust score circular meter */}
-                <div className="md:col-span-4 bg-slate-900/50 p-4.5 rounded-2xl border border-slate-800 flex flex-col justify-between">
-                  <div className="space-y-1">
-                    <span className="text-[10px] text-slate-400 font-mono block uppercase">CONTRACTOR TRUST SCORE</span>
-                    <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-4xl font-black text-amber-500 font-mono">98</span>
-                      <span className="text-sm text-slate-400 font-mono">/100</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2.5 pt-3 border-t border-slate-955 mt-4 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">GST Verification:</span>
-                      <span className="text-emerald-400 font-bold">Verified (सत्यापित)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Escrow Readiness:</span>
-                      <span className="text-emerald-400 font-bold">Active (सक्रिय)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Verified Work Orders:</span>
-                      <span className="text-white font-mono font-bold">156 Orders</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right col: detail metrics */}
-                <div className="md:col-span-8 bg-slate-900/20 p-4.5 rounded-2xl border border-slate-855 space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-xs">
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "भुगतान विश्वसनीयता" : "Payment Reliability"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white font-mono text-sm">97%</span>
-                        <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">Excellent</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: "97%" }}></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "कामगार संतुष्टि रेटिंग" : "Worker Satisfaction"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white font-mono text-sm">4.9 / 5.0</span>
-                        <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">Top Rated</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: "98%" }}></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "विवाद दर" : "Dispute Ratio"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-emerald-400 font-mono text-sm">1.2%</span>
-                        <span className="text-[9px] text-slate-500">Very Low</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-emerald-500 h-full rounded-full" style={{ width: "12%" }}></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-slate-400 block">{lang === "hi" ? "पुनः नियुक्ति स्कोर" : "Repeat Hiring Score"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white font-mono text-sm">91%</span>
-                        <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">High</span>
-                      </div>
-                      <div className="w-full bg-slate-955 h-1 rounded-full overflow-hidden mt-1">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: "91%" }}></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-900">
-                    <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      GST Verified
-                    </span>
-                    <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      Payment Safe
-                    </span>
-                    <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      Zero Commission Hiring
-                    </span>
-                    <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-500 px-2 py-0.5 rounded font-mono uppercase font-bold">
-                      Escrow Ready
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         )}
 
@@ -7383,7 +7023,270 @@ export default function HomePage() {
                 </button>
               </div>
 
+              {/* PROMPT-14: Admin Revenue Intelligence Card */}
+              <div className="mt-8 border-t border-slate-800 pt-6 space-y-4 text-left">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-emerald-400" />
+                    <div>
+                      <h4 className="text-sm font-bold text-white font-mono">
+                        {lang === "hi" ? "राजस्व खुफिया और मंच वित्तीय स्थिरता" : "Revenue Intelligence & Platform Sustainability"}
+                      </h4>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        {lang === "hi" 
+                          ? "मंच की दीर्घकालिक स्थिरता और मजदूरी सुरक्षा संकेतकों का वास्तविक समय विवरण।" 
+                          : "Real-time metrics demonstrating scalable operations without exploiting workers."}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2.5 py-1 rounded-full font-mono font-bold uppercase self-start sm:self-center">
+                    {lang === "hi" ? "वित्तीय स्थिरता" : "SUSTAINABLE MODEL"}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block font-mono uppercase tracking-wider">{lang === "hi" ? "आज का राजस्व" : "Today's Revenue"}</span>
+                    <span className="text-lg font-black text-amber-500 font-mono mt-1 block">₹{prompt14AdminRevenue.todayRevenue.toLocaleString()}</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block font-mono">Simulated Micro-fee</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block font-mono uppercase tracking-wider">{lang === "hi" ? "मासिक अनुमानित" : "Monthly Projected"}</span>
+                    <span className="text-lg font-black text-white font-mono mt-1 block">₹{prompt14AdminRevenue.monthlyProjected.toLocaleString()}</span>
+                    <span className="text-[8px] text-emerald-400 mt-0.5 block font-mono">● 100% Run Rate</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block font-mono uppercase tracking-wider">{lang === "hi" ? "पूर्ण सेटलमेंट" : "Completed Settlements"}</span>
+                    <span className="text-lg font-black text-white font-mono mt-1 block">{prompt14AdminRevenue.completedCount}</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block font-mono">Audited receipts</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block font-mono uppercase tracking-wider">{lang === "hi" ? "औसत मंच शुल्क" : "Avg Platform Fee"}</span>
+                    <span className="text-lg font-black text-white font-mono mt-1 block">₹{prompt14AdminRevenue.avgFee}</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block font-mono">Paid by contractor</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block font-mono uppercase tracking-wider">{lang === "hi" ? "मजदूरी सुरक्षा" : "Wage Protected"}</span>
+                    <span className="text-lg font-black text-emerald-400 font-mono mt-1 block">{prompt14AdminRevenue.wageProtected}%</span>
+                    <span className="text-[8px] text-emerald-400 mt-0.5 block font-mono">No worker deduction</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block font-mono uppercase tracking-wider">{lang === "hi" ? "विवाद मुक्त सेटलमेंट" : "Dispute-Free Rate"}</span>
+                    <span className="text-lg font-black text-emerald-400 font-mono mt-1 block">{prompt14AdminRevenue.disputeFreeRate}%</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block font-mono">Direct verification</span>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-slate-950 border border-slate-850 rounded-xl flex items-start gap-2.5 text-xs text-slate-400">
+                  <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                  <p className="leading-relaxed">
+                    <strong>{lang === "hi" ? "स्थिरता विवरण:" : "Sustainability Note:"}</strong>{" "}
+                    {lang === "hi"
+                      ? "पारदर्शी सूक्ष्म-शुल्क (₹२९ प्रति सेटलमेंट) मॉडल बिना किसी शोषण के लेबरअड्डा को आत्मनिर्भर और स्केलेबल बनाता है। यह सुनिश्चित करता है कि श्रमिक की मजदूरी से ₹१ भी कम न किया जाए।"
+                      : "Transparent micro-fee model enables scalable operations without exploiting workers. By receiving fee entirely from contractor post-job, we guarantee 100% of agreed daily wage goes directly to worker's pocket."}
+                  </p>
+                </div>
+
+                {/* Safety / Compliance warning banner */}
+                <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-850 text-[9px] text-slate-500 leading-normal mb-6">
+                  <p>
+                    <strong>{lang === "hi" ? "सिम्युलेटेड डेमो अनुपालन सूचना:" : "Demo Compliance Note:"}</strong>{" "}
+                    {lang === "hi"
+                      ? "यह एक प्रशासनिक सिमुलेशन परत है। कोई वास्तविक भुगतान लेनदेन या बैंक एपीआई एकीकरण सक्रिय नहीं है।"
+                      : "This is an administrative simulation layer. No real money transactions or banking API integrations are active."}
+                  </p>
+                </div>
+              </div>
+
             </form>
+
+            {/* PROMPT-14B: Dynamic Platform Fee Control Panel */}
+            <div className="mt-10 border-t border-slate-800 pt-8 space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <Coins className="w-5 h-5 text-amber-500" />
+                  <div>
+                    <h4 className="text-md font-bold text-white font-sans">
+                      {lang === "hi" ? "गतिशील प्लेटफॉर्म शुल्क नियंत्रण" : "Dynamic Platform Fee Control Panel"}
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {lang === "hi"
+                        ? "विभिन्न ट्रेड श्रेणियों के लिए लचीले प्लेटफॉर्म शुल्क अनुकूलित करें।"
+                        : "Configure and deploy custom trade-specific micro-fee rules to the infrastructure grid."}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[10px] bg-amber-500/15 border border-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-mono font-bold uppercase">
+                  {lang === "hi" ? "नियंत्रण पैनल" : "CONTROL PANEL"}
+                </span>
+              </div>
+
+              {/* Trade configuration list */}
+              <div className="grid grid-cols-1 gap-4">
+                {prompt14TradeFees.map((tf) => {
+                  return (
+                    <div key={tf.id} className="bg-slate-950 p-4 rounded-xl border border-slate-850 hover:border-slate-800 transition duration-150 space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-900 pb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                          <h5 className="text-xs font-bold text-white">
+                            {lang === "hi" ? `${tf.nameHi} / ${tf.nameEn}` : `${tf.nameEn} (${tf.nameHi})`}
+                          </h5>
+                        </div>
+                         <span className={`text-[9px] px-2 py-0.5 rounded border uppercase font-mono font-bold ${
+                          tf.phase === "Launch" ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20" :
+                          tf.phase === "Growth" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                          tf.phase === "Scale" ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
+                          "bg-slate-500/15 text-slate-400 border-slate-700"
+                        }`}>
+                          {tf.phase === "Launch" ? (lang === "hi" ? "लॉन्च चरण (3%-5%)" : "Launch Phase (3%–5%)") :
+                           tf.phase === "Growth" ? (lang === "hi" ? "विकास चरण (5%-10%)" : "Growth Phase (5%–10%)") :
+                           tf.phase === "Scale" ? (lang === "hi" ? "स्केल चरण (10%-15%)" : "Scale Phase (10%–15%)") :
+                           (lang === "hi" ? "भविष्य व्यवस्थापक सीमा (20%-30%)" : "Future Admin Cap (20%–30% - Not Active)")}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+                        <div>
+                          <label className="text-slate-500 block text-[9px] uppercase mb-1 font-mono">{lang === "hi" ? "औसत दैनिक मजदूरी" : "Avg Wage (₹)"}</label>
+                          <input
+                            type="number"
+                            value={tf.avgWage}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setPrompt14TradeFees(prompt14TradeFees.map(item => item.id === tf.id ? { ...item, avgWage: val } : item));
+                            }}
+                            className="w-full bg-slate-900 border border-slate-800 p-1.5 rounded text-white font-mono"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-slate-500 block text-[9px] uppercase mb-1 font-mono">{lang === "hi" ? "मंच शुल्क (%)" : "Fee Percent (%)"}</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            value={tf.feePercent}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setPrompt14TradeFees(prompt14TradeFees.map(item => item.id === tf.id ? { ...item, feePercent: val } : item));
+                            }}
+                            className="w-full bg-slate-900 border border-slate-800 p-1.5 rounded text-white font-mono"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-slate-500 block text-[9px] uppercase mb-1 font-mono">{lang === "hi" ? "न्यूनतम शुल्क (₹)" : "Min Fee (₹)"}</label>
+                          <input
+                            type="number"
+                            value={tf.minFee}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setPrompt14TradeFees(prompt14TradeFees.map(item => item.id === tf.id ? { ...item, minFee: val } : item));
+                            }}
+                            className="w-full bg-slate-900 border border-slate-800 p-1.5 rounded text-white font-mono"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-slate-500 block text-[9px] uppercase mb-1 font-mono">{lang === "hi" ? "अधिकतम शुल्क (₹)" : "Max Fee (₹)"}</label>
+                          <input
+                            type="number"
+                            value={tf.maxFee}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setPrompt14TradeFees(prompt14TradeFees.map(item => item.id === tf.id ? { ...item, maxFee: val } : item));
+                            }}
+                            className="w-full bg-slate-900 border border-slate-800 p-1.5 rounded text-white font-mono"
+                          />
+                        </div>
+
+                        <div className="col-span-2 sm:col-span-1">
+                          <label className="text-slate-500 block text-[9px] uppercase mb-1 font-mono">{lang === "hi" ? "व्यापार चरण" : "Business Phase"}</label>
+                          <select
+                            value={tf.phase}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setPrompt14TradeFees(prompt14TradeFees.map(item => item.id === tf.id ? { ...item, phase: val } : item));
+                            }}
+                            className="w-full bg-slate-900 border border-slate-800 p-1.5 rounded text-white text-xs cursor-pointer min-h-[34px]"
+                          >
+                            <option value="Launch">Launch Phase (3%–5%)</option>
+                            <option value="Growth">Growth Phase (5%–10%)</option>
+                            <option value="Scale">Scale Phase (10%–15%)</option>
+                            <option value="Future" disabled>Future Admin Cap (20%–30% - Not Active)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-900 text-[10px]">
+                        <span className="text-slate-500 font-mono">
+                          {lang === "hi" ? "प्रभावी शुल्क सीमा:" : "Effective Range:"} ₹{tf.minFee} - ₹{tf.maxFee}
+                        </span>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // Success Action
+                            setAdminStatusMsg(
+                              lang === "hi"
+                                ? `सफलता: ${tf.nameHi} के लिए गतिशील शुल्क नियम सफलतापूर्वक अपडेट कर दिए गए हैं!`
+                                : `Success: Dynamic fee rules for ${tf.nameEn} successfully configured and deployed!`
+                            );
+                            handleVoiceSpeak(
+                              `${tf.nameHi} के लिए शुल्क नियम सहेज लिया गया है।`,
+                              `Fee rule for ${tf.nameEn} has been updated. Blended rate is now ${tf.feePercent} percent.`
+                            );
+                            setTimeout(() => setAdminStatusMsg(""), 5000);
+                          }}
+                          className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded text-xs transition cursor-pointer font-sans"
+                        >
+                          {lang === "hi" ? "शुल्क नियम सहेजें" : "Save Fee Rule"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Jury Explanation Card: Why Dynamic Fees Matter */}
+              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-850 space-y-4">
+                <div className="flex items-center gap-2 border-b border-slate-900 pb-2.5">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest font-bold">
+                    {lang === "hi" ? "गतिशील प्लेटफॉर्म शुल्क क्यों आवश्यक है?" : "Why Dynamic Fees Matter"}
+                  </h4>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-300">
+                  <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 space-y-1.5 text-left">
+                    <span className="font-bold text-amber-500 block">1. {lang === "hi" ? "ठेकेदार वहन क्षमता" : "Contractor Affordability"}</span>
+                    <p className="text-[11px] leading-relaxed text-slate-400">
+                      {lang === "hi"
+                        ? "उच्च मजदूरी वाले ट्रेड थोड़े अधिक शुल्क वहन कर सकते हैं, जबकि लो-मार्जिन सहायक खंडों को कम शुल्क की आवश्यकता होती है।"
+                        : "Higher-paying trades can afford slightly higher transaction costs, while low-margin helper segments need low-barrier access."}
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 space-y-1.5 text-left">
+                    <span className="font-bold text-emerald-400 block">2. {lang === "hi" ? "स्थानीय मांग अनुकूलन" : "Localized Demand Responsiveness"}</span>
+                    <p className="text-[11px] leading-relaxed text-slate-400">
+                      {lang === "hi"
+                        ? "गोरखपुर जैसे उच्च निर्माण क्षेत्रों में गतिशील दरें मांग संतुलन बनाए रखती हैं, जबकि ग्रामीण क्षेत्रों में प्रवेश शुल्क कम रहता है।"
+                        : "In boom areas like Gorakhpur, dynamic rates prevent system congestion, while rural areas enjoy promotional pricing."}
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 space-y-1.5 text-left">
+                    <span className="font-bold text-blue-400 block">3. {lang === "hi" ? "क्रॉस-सब्सिडी स्केल" : "Cross-Subsidized Scalability"}</span>
+                    <p className="text-[11px] leading-relaxed text-slate-400">
+                      {lang === "hi"
+                        ? "प्रीमियम ट्रेडों से प्राप्त शुल्क सामान्य श्रमिकों के मुफ्त डिजिटल प्रशिक्षण और निशुल्क बुनियादी सुविधाओं के वित्तपोषण में काम आता है।"
+                        : "Premium trade fees directly fund free digital training classes and infrastructure for general laborers."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
         )}
 
@@ -10198,6 +10101,72 @@ export default function HomePage() {
 
             </div>
 
+            {/* PROMPT-14: Platform Sustainability Index (Double Column Card) */}
+            <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border-2 border-emerald-500/20 rounded-3xl p-6 text-left relative overflow-hidden shadow-2xl">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div className="lg:col-span-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest">
+                      {lang === "hi" ? "राष्ट्रीय आत्मनिर्भरता मेट्रिक्स" : "NATIONAL SELF-SUSTAINABILITY INDEX"}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white font-sans">
+                    {lang === "hi" ? "प्लेटफॉर्म स्थिरता सूचकांक" : "Platform Sustainability Index"}
+                  </h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    {lang === "hi" 
+                      ? "लेबरअड्डा के सामाजिक प्रभाव और वित्तीय आत्मनिर्भरता को संतुलित करने वाली वास्तविक समय की रेटिंग।" 
+                      : "A real-time rating measuring LabourAdda's balance of social impact & financial self-sufficiency."}
+                  </p>
+                  
+                  <div className="pt-2 flex items-baseline gap-2">
+                    <span className="text-4xl font-black text-emerald-400 font-mono tracking-tight">{prompt14SustainabilityIndex}%</span>
+                    <span className="text-xs text-emerald-500 font-mono font-bold uppercase">({lang === "hi" ? "अति विश्वसनीय" : "High Trust Score"})</span>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-left space-y-1">
+                    <span className="text-[9px] text-slate-500 font-mono uppercase tracking-wider block">{lang === "hi" ? "सूक्ष्म-शुल्क राजस्व प्रवाह" : "Micro-Fee Stream"}</span>
+                    <span className="text-sm font-bold text-white font-mono block">100% {lang === "hi" ? "स्थिर" : "Stable"}</span>
+                    <span className="text-[8px] text-slate-500 block font-mono">Simulated fee run rate</span>
+                  </div>
+
+                  <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-left space-y-1">
+                    <span className="text-[9px] text-slate-500 font-mono uppercase tracking-wider block">{lang === "hi" ? "मजदूरी सुरक्षा दर" : "Wage Protection"}</span>
+                    <span className="text-sm font-bold text-emerald-400 font-mono block">100% {lang === "hi" ? "सुरक्षित" : "Protected"}</span>
+                    <span className="text-[8px] text-slate-500 block font-mono">No commission on wages</span>
+                  </div>
+
+                  <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-left space-y-1">
+                    <span className="text-[9px] text-slate-500 font-mono uppercase tracking-wider block">{lang === "hi" ? "सत्यापित सेटलमेंट ट्रेल" : "Verified Settlement Trail"}</span>
+                    <span className="text-sm font-bold text-white font-mono block">100% {lang === "hi" ? "सत्यापित" : "Audited"}</span>
+                    <span className="text-[8px] text-emerald-500 block font-mono">Tamper-proof receipts</span>
+                  </div>
+
+                  <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-left space-y-1">
+                    <span className="text-[9px] text-slate-500 font-mono uppercase tracking-wider block">{lang === "hi" ? "विवाद दर में कमी" : "Dispute Reduction"}</span>
+                    <span className="text-sm font-bold text-emerald-400 font-mono block">-92% {lang === "hi" ? "कमी" : "Resolved"}</span>
+                    <span className="text-[8px] text-slate-500 block font-mono">Dispute-free settlements</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Safety Compliance notice */}
+              <div className="mt-4 pt-3.5 border-t border-slate-900 text-[10px] text-slate-500 flex items-center gap-2">
+                <Info className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <p>
+                  <strong>{lang === "hi" ? "सिम्युलेटेड डेमो अनुपालन सूचना:" : "Demo Compliance Note:"}</strong>{" "}
+                  {lang === "hi"
+                    ? "यह स्थिरता सूचकांक सिमुलेशन इंजन पर आधारित है। कोई वास्तविक बैंकिंग क्रेडेंशियल या वित्तीय लेनदेन आवश्यक या प्रयुक्त नहीं हैं।"
+                    : "This sustainability metric is simulated for demonstrating model financial resilience. No actual bank endpoints are called."}
+                </p>
+              </div>
+            </div>
+
             {/* BENTO GRID: SECTION 1 - DISTRICT DEMAND vs SKILL GAP */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               
@@ -10377,47 +10346,19 @@ export default function HomePage() {
               <div className="lg:col-span-6 bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <ShieldCheck className="w-5 h-5 text-amber-500" />
-                        <div>
-                          <h3 className="text-sm font-bold text-white font-mono">
-                            {lang === "hi" ? "विश्वास और औपचारिकरण परत" : "Trust & Formalization Layer"}
-                          </h3>
-                          <p className="text-[11px] text-slate-400 mt-0.5">
-                            {lang === "hi" ? "सुरक्षा, आधार जुड़ाव और रेटिंग संकेतक" : "National verified tracking for secure hiring contracts."}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 font-mono text-xs font-black px-2.5 py-1 rounded shrink-0 flex items-center gap-1.5 animate-pulse">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>National Trust Index: 91%</span>
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-amber-500" />
+                      <div>
+                        <h3 className="text-sm font-bold text-white font-mono">
+                          {lang === "hi" ? "विश्वास और औपचारिकरण परत" : "Trust & Formalization Layer"}
+                        </h3>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                          {lang === "hi" ? "सुरक्षा, आधार जुड़ाव और रेटिंग संकेतक" : "National verified tracking for secure hiring contracts."}
+                        </p>
                       </div>
                     </div>
-
-                    {/* Progress Indicator and National Audit Metrics */}
-                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850 space-y-2 font-mono text-[10px] text-left">
-                      <div className="flex justify-between items-center text-slate-400">
-                        <span>NATIONAL REAL-TIME TRUST RATE</span>
-                        <span className="text-white font-bold">91.4% (Tier-1 Pass)</span>
-                      </div>
-                      <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                        <div className="bg-gradient-to-r from-amber-500 to-emerald-400 h-full rounded-full" style={{ width: "91.4%" }}></div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 pt-1.5 border-t border-slate-900 text-center text-[9px] text-slate-500">
-                        <div>
-                          <span className="block text-white font-bold font-mono">1.8M+</span>
-                          <span>Verified Workers</span>
-                        </div>
-                        <div>
-                          <span className="block text-white font-bold font-mono">420K+</span>
-                          <span>Audited Employers</span>
-                        </div>
-                        <div>
-                          <span className="block text-white font-bold font-mono">&lt; 0.5%</span>
-                          <span>Dispute Ratio</span>
-                        </div>
-                      </div>
+                    <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 font-mono text-xs font-black px-2.5 py-1 rounded">
+                      National Trust Index: 91%
                     </div>
                   </div>
 
