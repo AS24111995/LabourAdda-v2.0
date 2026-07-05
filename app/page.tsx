@@ -717,6 +717,12 @@ export default function HomePage() {
 
   // Contractor Dashboard States
   const [contractorActionModal, setContractorActionModal] = useState<string | null>(null);
+  
+  // Prompt-15 AI Smart Hiring States
+  const [prompt15Shortlisted, setPrompt15Shortlisted] = useState<string[]>([]);
+  const [prompt15OffersSent, setPrompt15OffersSent] = useState<string[]>([]);
+  const [prompt15ViewingPassport, setPrompt15ViewingPassport] = useState<string | null>(null);
+  const [prompt15CallingWorker, setPrompt15CallingWorker] = useState<string | null>(null);
   const [contractorNotifications, setContractorNotifications] = useState([
     { id: "cn-1", type: "applied", textHi: "राम सिंह (राजमिस्त्री) ने आपके GIDA प्रोजेक्ट के लिए आवेदन किया है।", textEn: "Ram Singh (Mason) applied for your GIDA project.", time: "2 min ago", unread: true },
     { id: "cn-2", type: "accepted", textHi: "श्याम लाल (पेंटर) ने आपका कार्य निमंत्रण स्वीकार किया है।", textEn: "Shyam Lal (Painter) accepted your work invitation.", time: "15 min ago", unread: true },
@@ -6716,6 +6722,496 @@ export default function HomePage() {
                 <TrendingUp className="w-4 h-4" />
                 <span>{lang === "hi" ? "इंटेलिजेंस डैशबोर्ड देखें" : "View Intelligence Dashboard"}</span>
               </button>
+            </div>
+
+            {/* PROMPT-15: AI CONTRACTOR RECOMMENDATION & SMART HIRING INTELLIGENCE ENGINE */}
+            <div id="ai-smart-hiring-section" className="mt-8 border-t border-slate-800 pt-8 space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2.5 bg-gradient-to-tr from-amber-500 to-amber-600 text-slate-950 rounded-2xl shadow-xl">
+                    <Sparkles className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-extrabold text-white font-sans tracking-tight flex items-center gap-2">
+                      {lang === "hi" ? "एआई स्मार्ट भर्ती सुझाव" : "AI Smart Hiring Recommendations"}
+                      <span className="text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded font-mono font-bold uppercase animate-pulse">AI Core v2.0</span>
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {lang === "hi"
+                        ? "सत्यापित डेटा संकेतों के आधार पर आपकी सक्रिय साइटों के लिए अनुकूलित सर्वश्रेष्ठ कामगारों की खोज करें।"
+                        : "Discover explainable top-matched verified workers for your active construction sites using real-time signals."}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[10px] bg-amber-500/15 border border-amber-500/20 text-amber-400 px-3 py-1 rounded-full font-mono font-bold uppercase tracking-wider self-start sm:self-center">
+                  {lang === "hi" ? "स्मार्ट एआई इंजन" : "SMART AI ENGINE"}
+                </span>
+              </div>
+
+              {/* SIMULATED TOASTS / STATUS NOTIFICATIONS */}
+              {prompt15CallingWorker && (
+                <div className="bg-amber-500 text-slate-950 p-3 rounded-xl flex items-center justify-between font-mono text-xs font-bold animate-pulse shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 animate-bounce" />
+                    <span>
+                      {lang === "hi" 
+                        ? `सिम्युलेटेड वॉयस कॉल कनेक्ट की जा रही है: +91 98765 43210 (${prompt15CallingWorker})...` 
+                        : `Connecting Simulated Voice Call to ${prompt15CallingWorker} (+91 98765 43210)...`}
+                    </span>
+                  </div>
+                  <button 
+                    onClick={() => setPrompt15CallingWorker(null)}
+                    className="bg-slate-950 text-white px-2.5 py-1 rounded hover:bg-slate-900 transition text-[10px]"
+                  >
+                    {lang === "hi" ? "कॉल समाप्त करें" : "Disconnect"}
+                  </button>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* 3 Recommended Workers Grid (Col 8) */}
+                <div className="lg:col-span-8 space-y-4">
+                  {[
+                    {
+                      id: "rec-1",
+                      name: "Hari Ram",
+                      nameHi: "हरी राम",
+                      trade: "Mason",
+                      tradeHi: "राजमिस्त्री",
+                      distance: "1.2 km",
+                      wage: 900,
+                      availability: lang === "hi" ? "आज उपलब्ध (8 AM)" : "Available Today (8 AM)",
+                      availabilityColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                      trustScore: 98,
+                      attendance: 99,
+                      completion: 98,
+                      fit: 98,
+                      bulletsHi: [
+                        "१.५ किमी सीमा के भीतर गोरखपुर हाईवे साइट से मेल खाता है।",
+                        "क्षेत्रीय GIDA मजदूरी मानकों के साथ सटीक मूल्य संरेखण।",
+                        "शून्य अंतिम मिनट रद्दीकरण के साथ विशिष्ट उपस्थिति विश्वसनीयता।"
+                      ],
+                      bulletsEn: [
+                        "Matches Gorakhpur highway site within 1.5km range.",
+                        "Perfect pricing alignment with regional GIDA wage standards.",
+                        "Elite attendance reliability with zero last-minute cancellations."
+                      ],
+                      breakdown: { skill: 100, location: 98, wage: 96, trust: 98, avail: 100, reliability: 99 }
+                    },
+                    {
+                      id: "rec-2",
+                      name: "Manoj Kumar",
+                      nameHi: "मनोज कुमार",
+                      trade: "Painter",
+                      tradeHi: "पेंटर",
+                      distance: "2.5 km",
+                      wage: 850,
+                      availability: lang === "hi" ? "कल उपलब्ध" : "Available Tomorrow",
+                      availabilityColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+                      trustScore: 94,
+                      attendance: 95,
+                      completion: 96,
+                      fit: 94,
+                      bulletsHi: [
+                        "सेक्टर-५ वाणिज्यिक पेंटिंग कार्यों में उच्च प्रदर्शन रेटिंग।",
+                        "प्रतिस्पर्धी मजदूरी दरें, जो GIDA औसत से कम हैं।",
+                        "सत्यापित राज्य स्तरीय पहचान और पृष्ठभूमि मंजूरी।"
+                      ],
+                      bulletsEn: [
+                        "High-performance rating in sector-5 commercial painting jobs.",
+                        "Competitive wage rates, lower than GIDA ceiling averages.",
+                        "Verified state-level identity and background clearance."
+                      ],
+                      breakdown: { skill: 95, location: 92, wage: 98, trust: 94, avail: 90, reliability: 95 }
+                    },
+                    {
+                      id: "rec-3",
+                      name: "Sunil Yadav",
+                      nameHi: "सुनील यादव",
+                      trade: "Helper",
+                      tradeHi: "मददगार / बेलदार",
+                      distance: "3.1 km",
+                      wage: 600,
+                      availability: lang === "hi" ? "आज उपलब्ध" : "Available Today",
+                      availabilityColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                      trustScore: 89,
+                      attendance: 92,
+                      completion: 90,
+                      fit: 89,
+                      bulletsHi: [
+                        "ऊंची इमारतों में भारी वजन उठाने के लिए उत्कृष्ट शारीरिक सहनशक्ति रिकॉर्ड।",
+                        "GIDA औद्योगिक लॉजिस्टिक्स के लिए तत्काल तैनाती के लिए तैयार।",
+                        "लगातार २४ असाइनमेंट में लगातार चेक-इन समयबद्धता।"
+                      ],
+                      bulletsEn: [
+                        "Excellent physical endurance records for high-rise heavy lifting.",
+                        "Immediate deployment-ready for GIDA industrial logistics.",
+                        "Consistent check-in punctuality over 24 consecutive assignments."
+                      ],
+                      breakdown: { skill: 90, location: 88, wage: 92, trust: 89, avail: 100, reliability: 90 }
+                    }
+                  ].map((worker) => {
+                    const isShortlisted = prompt15Shortlisted.includes(worker.id);
+                    const isOffered = prompt15OffersSent.includes(worker.id);
+                    const isViewingPassport = prompt15ViewingPassport === worker.id;
+
+                    return (
+                      <div key={worker.id} className="bg-slate-950 p-5 rounded-2xl border border-slate-850 hover:border-slate-800 transition duration-150 space-y-4">
+                        {/* Upper Section */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-900">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center font-bold text-white uppercase text-sm font-mono relative">
+                              {worker.name[0]}
+                              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-slate-950" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h5 className="text-sm font-bold text-white font-mono">
+                                  {lang === "hi" ? worker.nameHi : worker.name}
+                                </h5>
+                                <span className="text-[10px] text-slate-500">|</span>
+                                <span className="text-[11px] font-mono font-bold text-amber-500 uppercase">
+                                  {lang === "hi" ? worker.tradeHi : worker.trade}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400">
+                                <span className="flex items-center gap-1 font-mono text-[11px]">
+                                  <MapPin className="w-3.5 h-3.5 text-amber-500" /> {worker.distance}
+                                </span>
+                                <span>•</span>
+                                <span className={`text-[10px] px-2 py-0.5 rounded border uppercase font-mono font-bold ${worker.availabilityColor}`}>
+                                  {worker.availability}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* AI Fit Circle Badge */}
+                          <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 px-3.5 py-1.5 rounded-xl text-right shrink-0">
+                            <div>
+                              <span className="text-[9px] text-slate-400 block uppercase font-mono font-bold leading-none">
+                                {lang === "hi" ? "एआई मैचिंग फिट" : "AI MATCHING FIT"}
+                              </span>
+                              <span className="text-md font-black text-amber-500 font-mono mt-0.5 block leading-none">
+                                {worker.fit}%
+                              </span>
+                            </div>
+                            <Sparkles className="w-5 h-5 text-amber-500 animate-pulse" />
+                          </div>
+                        </div>
+
+                        {/* Middle Info & Metrics Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+                          <div className="bg-slate-900/40 p-2.5 rounded-xl border border-slate-900/60 text-left">
+                            <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "मजदूरी दर" : "Wage Demand"}</span>
+                            <span className="font-bold text-white block mt-1">₹{worker.wage} / {lang === "hi" ? "दिन" : "day"}</span>
+                          </div>
+                          <div className="bg-slate-900/40 p-2.5 rounded-xl border border-slate-900/60 text-left">
+                            <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "ट्रस्ट स्कोर" : "Trust Score"}</span>
+                            <span className="font-bold text-emerald-400 block mt-1">🛡️ {worker.trustScore}%</span>
+                          </div>
+                          <div className="bg-slate-900/40 p-2.5 rounded-xl border border-slate-900/60 text-left">
+                            <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "उपस्थिति दर" : "Attendance Rate"}</span>
+                            <span className="font-bold text-blue-400 block mt-1">📊 {worker.attendance}%</span>
+                          </div>
+                          <div className="bg-slate-900/40 p-2.5 rounded-xl border border-slate-900/60 text-left">
+                            <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "पूर्णता दर" : "Completion Rate"}</span>
+                            <span className="font-bold text-white block mt-1">🎯 {worker.completion}%</span>
+                          </div>
+                        </div>
+
+                        {/* Explainable AI Reason Bullets */}
+                        <div className="bg-slate-900/30 border border-slate-900 p-3.5 rounded-xl space-y-2 text-xs">
+                          <span className="text-[10px] text-slate-500 font-mono uppercase font-bold tracking-wider block">
+                            💡 {lang === "hi" ? "एआई मिलान स्पष्टीकरण" : "Explainable AI Match Reasons"}
+                          </span>
+                          <ul className="space-y-1.5 text-slate-300">
+                            {(lang === "hi" ? worker.bulletsHi : worker.bulletsEn).map((bullet, index) => (
+                              <li key={index} className="flex items-start gap-2">
+                                <span className="text-amber-500 shrink-0 mt-1">•</span>
+                                <span className="text-[11px] leading-relaxed">{bullet}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Scoring Breakdown Bar Visualizer */}
+                        <div className="space-y-2.5 border-t border-slate-900/80 pt-3">
+                          <span className="text-[10px] text-slate-500 font-mono uppercase font-bold tracking-wider block">
+                            🎯 {lang === "hi" ? "एआई स्कोरिंग ब्रेकडाउन" : "Explainable AI Scoring Breakdown"}
+                          </span>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-[10px] font-mono text-slate-400">
+                            <div>
+                              <div className="flex justify-between mb-1">
+                                <span>{lang === "hi" ? "कौशल मिलान" : "Skill Match"}</span>
+                                <span className="text-white font-bold">{worker.breakdown.skill}%</span>
+                              </div>
+                              <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <div className="h-full bg-amber-500" style={{ width: `${worker.breakdown.skill}%` }} />
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between mb-1">
+                                <span>{lang === "hi" ? "स्थान निकटता" : "Location Proximity"}</span>
+                                <span className="text-white font-bold">{worker.breakdown.location}%</span>
+                              </div>
+                              <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <div className="h-full bg-emerald-500" style={{ width: `${worker.breakdown.location}%` }} />
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between mb-1">
+                                <span>{lang === "hi" ? "मजदूरी उपयुक्तता" : "Wage Alignment"}</span>
+                                <span className="text-white font-bold">{worker.breakdown.wage}%</span>
+                              </div>
+                              <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <div className="h-full bg-blue-500" style={{ width: `${worker.breakdown.wage}%` }} />
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between mb-1">
+                                <span>{lang === "hi" ? "ट्रस्ट विश्वसनीयता" : "Trust & Identity"}</span>
+                                <span className="text-white font-bold">{worker.breakdown.trust}%</span>
+                              </div>
+                              <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <div className="h-full bg-purple-500" style={{ width: `${worker.breakdown.trust}%` }} />
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between mb-1">
+                                <span>{lang === "hi" ? "दैनिक उपलब्धता" : "Daily Availability"}</span>
+                                <span className="text-white font-bold">{worker.breakdown.avail}%</span>
+                              </div>
+                              <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <div className="h-full bg-pink-500" style={{ width: `${worker.breakdown.avail}%` }} />
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between mb-1">
+                                <span>{lang === "hi" ? "पिछला प्रदर्शन" : "Past Attendance"}</span>
+                                <span className="text-white font-bold">{worker.breakdown.reliability}%</span>
+                              </div>
+                              <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <div className="h-full bg-teal-500" style={{ width: `${worker.breakdown.reliability}%` }} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Simulated Passport Modal/Inline Overlay */}
+                        {isViewingPassport && (
+                          <div className="bg-slate-900 border-2 border-emerald-500/30 rounded-xl p-4.5 animate-fadeIn relative">
+                            <button
+                              type="button"
+                              onClick={() => setPrompt15ViewingPassport(null)}
+                              className="absolute top-3 right-3 text-slate-400 hover:text-white text-xs font-mono"
+                            >
+                              ✕
+                            </button>
+                            <div className="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
+                              <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1">
+                                <ShieldCheck className="w-3.5 h-3.5" /> SECURE NATIONAL LABOUR PASSPORT
+                              </span>
+                              <span className="text-[8px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded font-mono font-bold uppercase">
+                                VERIFIED
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+                              <div>
+                                <span className="text-slate-500 block uppercase text-[8px]">{lang === "hi" ? "नाम" : "FULL NAME"}:</span>
+                                <span className="text-white font-bold block">{lang === "hi" ? worker.nameHi : worker.name}</span>
+                              </div>
+                              <div>
+                                <span className="text-slate-500 block uppercase text-[8px]">{lang === "hi" ? "राष्ट्रीय पहचान संख्या" : "NATIONAL LABOUR UID"}:</span>
+                                <span className="text-white font-bold block">LAB-IND-283-{worker.id.toUpperCase()}-B</span>
+                              </div>
+                              <div>
+                                <span className="text-slate-500 block uppercase text-[8px]">{lang === "hi" ? "प्रमाणित हुनर" : "VERIFIED TRADE"}:</span>
+                                <span className="text-amber-500 font-bold block">{lang === "hi" ? worker.tradeHi : worker.trade}</span>
+                              </div>
+                              <div>
+                                <span className="text-slate-500 block uppercase text-[8px]">{lang === "hi" ? "सुरक्षा साफ़ पत्र" : "BACKGROUND CLEARANCE"}:</span>
+                                <span className="text-emerald-400 font-bold block">✓ PASSED / CLEAN</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Interactive Action Buttons */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-t border-slate-900 pt-3">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPrompt15CallingWorker(worker.name);
+                              handleVoiceSpeak(
+                                `${worker.nameHi} को सिम्युलेटेड कॉल मिलाई जा रही है।`,
+                                `Placing simulated voice call to ${worker.name}.`
+                              );
+                            }}
+                            className="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/30 text-slate-300 hover:text-white rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]"
+                          >
+                            <Phone className="w-3.5 h-3.5 text-amber-500" />
+                            <span>{lang === "hi" ? "सीधा कॉल" : "Direct Call"}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (isOffered) return;
+                              setPrompt15OffersSent([...prompt15OffersSent, worker.id]);
+                              handleVoiceSpeak(
+                                `${worker.nameHi} को डिजिटल नौकरी का प्रस्ताव सफलतापूर्वक भेजा गया है।`,
+                                `Digital employment offer successfully dispatched to ${worker.name}.`
+                              );
+                              alert(`सफलता: ${lang === "hi" ? worker.nameHi : worker.name} को राष्ट्रीय श्रम ग्रिड के तहत काम का प्रस्ताव भेजा गया!`);
+                            }}
+                            className={`p-2 border rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px] ${
+                              isOffered
+                                ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 font-bold"
+                                : "bg-slate-900 hover:bg-slate-850 border-slate-800 hover:border-emerald-500/30 text-slate-300 hover:text-white"
+                            }`}
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>{isOffered ? (lang === "hi" ? "प्रस्ताव भेजा" : "Offer Sent") : (lang === "hi" ? "नौकरी प्रस्ताव" : "Send Offer")}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPrompt15ViewingPassport(isViewingPassport ? null : worker.id);
+                              handleVoiceSpeak(
+                                `${worker.nameHi} का डिजिटल पासपोर्ट और बायोडाटा लोड किया जा रहा है।`,
+                                `Loading secure national labour passport credentials for ${worker.name}.`
+                              );
+                            }}
+                            className="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/30 text-slate-300 hover:text-white rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]"
+                          >
+                            <Award className="w-3.5 h-3.5 text-blue-400" />
+                            <span>{lang === "hi" ? "पासपोर्ट देखें" : "View Passport"}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (isShortlisted) {
+                                setPrompt15Shortlisted(prompt15Shortlisted.filter(id => id !== worker.id));
+                                handleVoiceSpeak(`${worker.nameHi} को शॉर्टलिस्ट से हटा दिया गया है।`, `Removed ${worker.name} from shortlist.`);
+                              } else {
+                                setPrompt15Shortlisted([...prompt15Shortlisted, worker.id]);
+                                handleVoiceSpeak(`${worker.nameHi} को शॉर्टलिस्ट किया गया है।`, `Added ${worker.name} to shortlist.`);
+                              }
+                            }}
+                            className={`p-2 border rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px] ${
+                              isShortlisted
+                                ? "bg-amber-500 text-slate-950 border-amber-500 hover:bg-amber-600"
+                                : "bg-slate-900 hover:bg-slate-850 border-slate-800 hover:border-amber-500/30 text-slate-300 hover:text-white"
+                            }`}
+                          >
+                            <Bookmark className={`w-3.5 h-3.5 ${isShortlisted ? "fill-slate-950 text-slate-950" : "text-amber-500"}`} />
+                            <span>{isShortlisted ? (lang === "hi" ? "शॉर्टलिस्टेड" : "Shortlisted") : (lang === "hi" ? "शॉर्टलिस्ट" : "Shortlist")}</span>
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* AI Hiring Optimizer Panel (Col 4) */}
+                <div className="lg:col-span-4 space-y-4">
+                  <div className="bg-slate-950 p-5 rounded-2xl border border-slate-850 space-y-4">
+                    <div className="flex items-center gap-2 border-b border-slate-900 pb-2.5">
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      <h5 className="text-xs font-mono text-slate-400 uppercase tracking-widest font-bold">
+                        {lang === "hi" ? "एआई भर्ती अनुकूलक" : "AI Hiring Optimizer"}
+                      </h5>
+                    </div>
+
+                    <div className="space-y-3.5 text-xs">
+                      <div className="flex justify-between items-center p-2.5 bg-slate-900 rounded-xl border border-slate-850/60">
+                        <div className="text-left">
+                          <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "सर्वश्रेष्ठ कामगार अभी" : "BEST WORKER NOW"}</span>
+                          <span className="font-bold text-white block mt-0.5">
+                            {lang === "hi" ? "हरी राम (राजमिस्त्री)" : "Hari Ram (Mason)"}
+                          </span>
+                        </div>
+                        <span className="text-xs bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-mono font-bold border border-amber-500/20">
+                          98% Fit
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center p-2.5 bg-slate-900 rounded-xl border border-slate-850/60">
+                        <div className="text-left">
+                          <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "सबसे तेज़ उपलब्ध" : "FASTEST AVAILABLE"}</span>
+                          <span className="font-bold text-white block mt-0.5">
+                            {lang === "hi" ? "सुनील यादव (मददगार)" : "Sunil Yadav (Helper)"}
+                          </span>
+                        </div>
+                        <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold border border-emerald-500/20">
+                          {lang === "hi" ? "तत्काल" : "Immediate"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center p-2.5 bg-slate-900 rounded-xl border border-slate-850/60">
+                        <div className="text-left">
+                          <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "न्यूनतम दैनिक मजदूरी" : "LOWEST WAGE FIT"}</span>
+                          <span className="font-bold text-white block mt-0.5">
+                            {lang === "hi" ? "सुनील यादव (मददगार)" : "Sunil Yadav (Helper)"}
+                          </span>
+                        </div>
+                        <span className="text-xs bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded font-mono font-bold border border-blue-500/20">
+                          ₹600/{lang === "hi" ? "दिन" : "day"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center p-2.5 bg-slate-900 rounded-xl border border-slate-850/60">
+                        <div className="text-left">
+                          <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "सर्वोच्च विश्वसनीयता" : "HIGHEST TRUST SCORE"}</span>
+                          <span className="font-bold text-white block mt-0.5">
+                            {lang === "hi" ? "हरी राम (राजमिस्त्री)" : "Hari Ram (Mason)"}
+                          </span>
+                        </div>
+                        <span className="text-xs bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded font-mono font-bold border border-purple-500/20">
+                          98% Trust
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-3.5 bg-amber-500/5 border border-amber-500/20 rounded-xl space-y-1.5 text-left">
+                      <span className="text-[10px] text-amber-500 font-mono font-bold uppercase tracking-wider block">
+                        ⚙️ {lang === "hi" ? "अनुशंसित भर्ती रणनीति" : "Recommended Hiring Strategy"}
+                      </span>
+                      <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                        {lang === "hi"
+                          ? "मुख्य राजमिस्त्री कार्य के लिए हरी राम को तुरंत लॉक करें, और उत्पादकता बढ़ाने व संचयी पाली लागत को १५% तक कम करने के लिए सहायक के रूप में सुनील यादव के साथ जोड़ें।"
+                          : "Lock in Hari Ram immediately for core masonry, and pair with Sunil Yadav as assistant helper to maximize productivity and lower combined shift costs by 15%."}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Jury Explanation Box */}
+                  <div className="bg-slate-950 p-5 rounded-2xl border border-slate-850 space-y-4">
+                    <div className="flex items-center gap-2 border-b border-slate-900 pb-2.5">
+                      <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                      <h4 className="text-xs font-mono text-slate-400 uppercase tracking-widest font-bold">
+                        {lang === "hi" ? "भारत के लिए क्यों आवश्यक है?" : "Why this matters for India"}
+                      </h4>
+                    </div>
+                    <div className="text-xs text-slate-300 space-y-2 text-left leading-relaxed">
+                      <p>
+                        <strong>English:</strong> LabourAdda reduces contractor hiring time by ranking verified workers using skill, distance, wage fit, trust, attendance, and job completion signals.
+                      </p>
+                      <p className="border-t border-slate-900/80 pt-2 text-[11px] text-slate-400">
+                        <strong>Hindi:</strong> लेबरअड्डा हुनर, दूरी, मजदूरी उपयुक्तता, विश्वास, उपस्थिति और कार्य पूर्णता संकेतों का उपयोग करके सत्यापित कामगारों को रैंक करता है, जिससे कांट्रेक्टर के भर्ती समय में कमी आती है।
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
