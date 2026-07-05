@@ -723,6 +723,17 @@ export default function HomePage() {
   const [prompt15OffersSent, setPrompt15OffersSent] = useState<string[]>([]);
   const [prompt15ViewingPassport, setPrompt15ViewingPassport] = useState<string | null>(null);
   const [prompt15CallingWorker, setPrompt15CallingWorker] = useState<string | null>(null);
+
+  // Prompt-16 National Digital Labour Passport States
+  const [prompt16WorkerVerified, setPrompt16WorkerVerified] = useState(false);
+  const [prompt16HistoryModal, setPrompt16HistoryModal] = useState(false);
+  const [prompt16Downloaded, setPrompt16Downloaded] = useState(false);
+  const [prompt16Shared, setPrompt16Shared] = useState(false);
+  const [prompt16ContractorScan, setPrompt16ContractorScan] = useState(false);
+  const [prompt16ContractorIdInput, setPrompt16ContractorIdInput] = useState("");
+  const [prompt16ContractorIdVerified, setPrompt16ContractorIdVerified] = useState(false);
+  const [prompt16ContractorApproved, setPrompt16ContractorApproved] = useState(false);
+
   const [contractorNotifications, setContractorNotifications] = useState([
     { id: "cn-1", type: "applied", textHi: "राम सिंह (राजमिस्त्री) ने आपके GIDA प्रोजेक्ट के लिए आवेदन किया है।", textEn: "Ram Singh (Mason) applied for your GIDA project.", time: "2 min ago", unread: true },
     { id: "cn-2", type: "accepted", textHi: "श्याम लाल (पेंटर) ने आपका कार्य निमंत्रण स्वीकार किया है।", textEn: "Shyam Lal (Painter) accepted your work invitation.", time: "15 min ago", unread: true },
@@ -1981,6 +1992,275 @@ export default function HomePage() {
                 </div>
               </div>
 
+            </div>
+
+            {/* PROMPT-16: NATIONAL DIGITAL LABOUR PASSPORT FOR WORKER */}
+            <div id="national-digital-labour-passport-section" className="mt-8 border-t border-slate-800 pt-8 space-y-6 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2.5 bg-gradient-to-tr from-emerald-500 to-emerald-600 text-slate-950 rounded-2xl shadow-xl">
+                    <ShieldCheck className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-extrabold text-white font-sans tracking-tight flex items-center gap-2">
+                      {lang === "hi" ? "राष्ट्रीय डिजिटल श्रम पासपोर्ट" : "National Digital Labour Passport"}
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-mono font-bold uppercase">LIVE INFRA</span>
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {lang === "hi"
+                        ? "असंगठित कामगारों के लिए भारत की पोर्टेबल, डिजिटल रूप से सत्यापित पहचान और क्रेडेंशियल।"
+                        : "India's portable, digitally verified identity & credentials for informal sector workforce participants."}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[10px] bg-emerald-500/15 border border-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-mono font-bold uppercase tracking-wider self-start sm:self-center">
+                  LP-IND-391821-A
+                </span>
+              </div>
+
+              {/* JURY DEMO HIGHLIGHT */}
+              <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-4 flex items-start gap-3">
+                <Sparkles className="w-5 h-5 text-amber-500 shrink-0 mt-0.5 animate-pulse" />
+                <div className="text-xs">
+                  <p className="text-amber-400 font-bold font-mono uppercase tracking-wide text-[10px]">Jury Demo Highlight / जूरी डेमो विशेषता:</p>
+                  <p className="text-slate-300 mt-1 leading-relaxed">
+                    <strong>English:</strong> “Digital Labour Passport transforms informal workers into verified, portable, bankable workforce participants.”
+                  </p>
+                  <p className="text-slate-400 mt-1 leading-relaxed text-[11px] border-t border-slate-900/60 pt-1.5">
+                    <strong>Hindi:</strong> “डिजिटल श्रम पासपोर्ट असंगठित कामगारों को सत्यापित, पोर्टेबल और वित्तीय रूप से सक्षम कार्यबल में बदलता है।”
+                  </p>
+                </div>
+              </div>
+
+              {/* SIMULATED TOASTS / STATUS NOTIFICATIONS */}
+              {prompt16WorkerVerified && (
+                <div className="bg-emerald-500 text-slate-950 p-4 rounded-xl space-y-1.5 shadow-lg relative animate-fadeIn">
+                  <button 
+                    onClick={() => setPrompt16WorkerVerified(false)}
+                    className="absolute top-2 right-2 hover:opacity-80 text-slate-950 font-bold font-mono text-xs"
+                  >
+                    ✕
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 shrink-0" />
+                    <span className="font-bold text-xs uppercase font-mono">
+                      {lang === "hi" ? "सत्यापन सफलतापूर्वक संपन्न हुआ" : "Passport Verified Successfully"}
+                    </span>
+                  </div>
+                  <p className="text-xs leading-normal">
+                    <strong>English:</strong> “Passport verified successfully. Worker identity, skill, trust score, and attendance history are authenticated.”
+                  </p>
+                  <p className="text-xs leading-normal border-t border-emerald-600/40 pt-1">
+                    <strong>Hindi:</strong> “पासपोर्ट सफलतापूर्वक सत्यापित हो गया है। कामगार की पहचान, हुनर, विश्वास स्कोर और उपस्थिति इतिहास प्रमाणित हैं।”
+                  </p>
+                </div>
+              )}
+
+              {prompt16HistoryModal && (
+                <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3 shadow-lg relative animate-fadeIn">
+                  <button 
+                    onClick={() => setPrompt16HistoryModal(false)}
+                    className="absolute top-2 right-2 text-slate-400 hover:text-white text-xs"
+                  >
+                    ✕
+                  </button>
+                  <div className="flex items-center gap-2 border-b border-slate-800 pb-1.5">
+                    <Award className="w-4 h-4 text-amber-500" />
+                    <span className="font-bold text-xs text-white uppercase font-mono">
+                      {lang === "hi" ? "सत्यापित कार्य इतिहास ट्रैक" : "Verified Work History Record"}
+                    </span>
+                  </div>
+                  <div className="space-y-2 max-h-40 overflow-y-auto text-xs font-mono text-slate-300">
+                    <div className="p-2 bg-slate-950 rounded border border-slate-850">
+                      <div className="flex justify-between font-bold text-white">
+                        <span>{lang === "hi" ? "प्लास्टर और कंक्रीट मिक्सिंग" : "Plaster & Concrete Mix"}</span>
+                        <span className="text-emerald-400">₹900/Day</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500 mt-1">Gorakhpur Industrial Corridor | Completed on 28 June 2026</p>
+                    </div>
+                    <div className="p-2 bg-slate-950 rounded border border-slate-850">
+                      <div className="flex justify-between font-bold text-white">
+                        <span>{lang === "hi" ? "ईंट चिनाई कार्य" : "Brickwork Construction"}</span>
+                        <span className="text-emerald-400">₹850/Day</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500 mt-1">Sahjanwa Housing Block | Completed on 15 June 2026</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {prompt16Downloaded && (
+                <div className="bg-blue-500 text-white p-3 rounded-xl flex items-center justify-between font-mono text-xs font-bold animate-pulse shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <Download className="w-4 h-4" />
+                    <span>{lang === "hi" ? "डेमो आईडी कार्ड डाउनलोड शुरू हुआ..." : "Downloading Demo National Labour ID..."}</span>
+                  </div>
+                  <button onClick={() => setPrompt16Downloaded(false)} className="text-white hover:opacity-80 font-bold">✕</button>
+                </div>
+              )}
+
+              {prompt16Shared && (
+                <div className="bg-purple-500 text-white p-3 rounded-xl flex items-center justify-between font-mono text-xs font-bold animate-pulse shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <Share2 className="w-4 h-4" />
+                    <span>{lang === "hi" ? "साझा लिंक क्लिपबोर्ड पर कॉपी किया गया!" : "Secure QR Verification Link Copied to Clipboard!"}</span>
+                  </div>
+                  <button onClick={() => setPrompt16Shared(false)} className="text-white hover:opacity-80 font-bold">✕</button>
+                </div>
+              )}
+
+              {/* Main Grid: QR Card and Metadata */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                
+                {/* Visual Passport QR Box (Col 5) */}
+                <div className="md:col-span-5 flex flex-col justify-center">
+                  <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/20 border-2 border-emerald-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+                    {/* Flag Ribbon */}
+                    <div className="absolute top-0 right-0 flex h-1 w-16">
+                      <div className="bg-[#FF9933] flex-1" />
+                      <div className="bg-white flex-1" />
+                      <div className="bg-[#138808] flex-1" />
+                    </div>
+
+                    <div className="flex justify-between items-start border-b border-slate-800 pb-2 mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-emerald-500 text-slate-950 px-1.5 py-0.5 rounded font-mono font-extrabold text-[9px] leading-none">
+                          IND
+                        </div>
+                        <div>
+                          <h5 className="text-[9px] font-bold text-white tracking-wider uppercase font-mono leading-none">DIGITAL PASSPORT</h5>
+                          <span className="text-[6px] text-slate-500 block font-mono uppercase mt-0.5">MIGRANT LABOUR AUTHORITY</span>
+                        </div>
+                      </div>
+                      <span className="text-[7px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 rounded font-mono uppercase font-bold flex items-center gap-1">
+                        <ShieldCheck className="w-3 h-3 text-emerald-400" /> AADHAAR KYC VERIFIED
+                      </span>
+                    </div>
+
+                    {/* QR Code Visual representation */}
+                    <div className="flex flex-col items-center justify-center py-4 bg-slate-950/60 rounded-xl border border-slate-900 mb-3 space-y-3">
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-md">
+                        {/* Custom Pure-CSS Grid QR Pattern */}
+                        <div className="grid grid-cols-7 gap-1 w-32 h-32">
+                          <div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div>
+                          <div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div>
+                          <div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div>
+                          <div className="bg-slate-300"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-300"></div>
+                          <div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div>
+                          <div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div>
+                          <div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-300"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div><div className="bg-slate-950"></div>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest animate-pulse flex items-center gap-1">
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping inline-block" /> QR AUTHENTICATION ACTIVE
+                      </span>
+                    </div>
+
+                    <div className="text-[10px] text-slate-500 font-mono text-center border-t border-slate-900 pt-2 flex justify-between">
+                      <span>VERIFIED: 06 JULY 2026</span>
+                      <span className="text-emerald-400 font-bold">SECURE ENCRYPTED QR</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Metadata Details & Actions (Col 7) */}
+                <div className="md:col-span-7 space-y-4">
+                  <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "पासपोर्ट आईडी" : "PASSPORT ID"}</span>
+                      <span className="font-bold text-white block mt-0.5">LP-IND-391821-A</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "कामगार का नाम" : "WORKER NAME"}</span>
+                      <span className="font-bold text-white block mt-0.5">Hari Ram</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "प्रमाणित पेशा" : "VERIFIED TRADES"}</span>
+                      <span className="font-bold text-amber-500 block mt-0.5">Mason, Painter</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "राज्य / जिला" : "STATE / DISTRICT"}</span>
+                      <span className="font-bold text-slate-300 block mt-0.5">Gorakhpur, UP</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "उपस्थिति विश्वसनीयता" : "ATTENDANCE RELIABILITY"}</span>
+                      <span className="font-bold text-emerald-400 block mt-0.5">📊 99%</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "ट्रस्ट स्कोर" : "TRUST SCORE"}</span>
+                      <span className="font-bold text-emerald-400 block mt-0.5">🛡️ 98%</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "कार्य इतिहास" : "WORK HISTORY"}</span>
+                      <span className="font-bold text-white block mt-0.5">💼 156 Jobs</span>
+                    </div>
+                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
+                      <span className="text-[9px] text-slate-500 block uppercase">{lang === "hi" ? "विवाद मुक्त रिकॉर्ड" : "DISPUTE-FREE RECORD"}</span>
+                      <span className="font-bold text-emerald-400 block mt-0.5">✓ 96.8%</span>
+                    </div>
+                  </div>
+
+                  {/* Compliance Warning */}
+                  <div className="bg-slate-900/40 p-2.5 rounded-lg border border-slate-850 text-[10px] text-slate-500 text-left font-mono leading-snug">
+                    🛡️ <strong>Demo Compliance Note:</strong> No real Aadhaar, banking, or government API is connected. This module demonstrates cryptographic passport-based verification workflow only.
+                  </div>
+
+                  {/* Actions Row */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrompt16WorkerVerified(true);
+                        handleVoiceSpeak("लेबर पासपोर्ट सफलतापूर्वक सत्यापित किया गया।", "Labour Passport authenticated successfully.");
+                      }}
+                      className="p-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl transition font-extrabold font-mono text-[11px] flex items-center justify-center gap-1 cursor-pointer min-h-[38px]"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>{lang === "hi" ? "पासपोर्ट सत्यापित" : "Verify Passport"}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrompt16HistoryModal(true);
+                        handleVoiceSpeak("सत्यापित कार्य इतिहास लोड हो रहा है।", "Verified work history logs retrieved.");
+                      }}
+                      className="p-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 hover:text-white rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1 cursor-pointer min-h-[38px]"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-amber-500" />
+                      <span>{lang === "hi" ? "कार्य इतिहास" : "Work History"}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrompt16Downloaded(true);
+                        setTimeout(() => setPrompt16Downloaded(false), 3000);
+                        handleVoiceSpeak("श्रम पहचान डाउनलोड हो रही है।", "Downloading portable Labor ID card template.");
+                      }}
+                      className="p-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 hover:text-white rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1 cursor-pointer min-h-[38px]"
+                    >
+                      <Download className="w-3.5 h-3.5 text-blue-400" />
+                      <span>{lang === "hi" ? "आईडी डाउनलोड" : "Download ID"}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrompt16Shared(true);
+                        setTimeout(() => setPrompt16Shared(false), 3000);
+                        handleVoiceSpeak("क्यूआर कोड सत्यापित लिंक कॉपी किया गया।", "Secure QR authentication link copied.");
+                      }}
+                      className="p-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 hover:text-white rounded-xl transition font-bold font-mono text-[11px] flex items-center justify-center gap-1 cursor-pointer min-h-[38px]"
+                    >
+                      <Share2 className="w-3.5 h-3.5 text-purple-400" />
+                      <span>{lang === "hi" ? "क्यूआर साझा" : "Share QR"}</span>
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
             </div>
 
             {/* TAILORED JOB OPPORTUNITIES SECTION */}
@@ -7214,6 +7494,198 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* PROMPT-16: WORKER PASSPORT VERIFICATION CONSOLE */}
+            <div id="worker-passport-verification-console" className="mt-8 border-t border-slate-800 pt-8 text-left space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2.5 bg-gradient-to-tr from-emerald-500 to-emerald-600 text-slate-950 rounded-2xl shadow-xl">
+                    <ShieldCheck className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-extrabold text-white font-sans tracking-tight">
+                      {lang === "hi" ? "कामगार पासपोर्ट सत्यापन कंसोल" : "Worker Passport Verification Console"}
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {lang === "hi"
+                        ? "सुरक्षित क्यूआर स्कैन और राष्ट्रीय श्रम डेटाबेस का उपयोग करके वास्तविक समय में पहचान सत्यापित करें।"
+                        : "Verify worker identities in real-time using secure QR scanning and the National Labour Registry database."}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-mono font-bold uppercase tracking-wider">
+                  AUTH LAYER v2.0
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                {/* Left Form: Input, Scan and Verification Checks */}
+                <div className="lg:col-span-6 bg-slate-950/60 p-5 rounded-2xl border border-slate-850 space-y-4">
+                  <h5 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider border-b border-slate-900 pb-2">
+                    {lang === "hi" ? "सत्यापन उपकरण और इनपुट" : "Verification Controls & Inputs"}
+                  </h5>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-wider font-mono block mb-1.5 font-bold">
+                        {lang === "hi" ? "श्रम पासपोर्ट आईडी दर्ज करें" : "Enter Labour Passport ID"}
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="e.g. LP-IND-391821-A"
+                          value={prompt16ContractorIdInput}
+                          onChange={(e) => setPrompt16ContractorIdInput(e.target.value)}
+                          className="flex-1 bg-slate-900 border border-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-mono focus:border-amber-500 outline-none placeholder:text-slate-600"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (!prompt16ContractorIdInput) {
+                              setPrompt16ContractorIdInput("LP-IND-391821-A");
+                            }
+                            setPrompt16ContractorIdVerified(true);
+                            handleVoiceSpeak("पासपोर्ट आईडी सत्यापन पूरा हुआ।", "Passport ID verification query submitted to national registry.");
+                          }}
+                          className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold font-mono rounded-xl text-xs transition cursor-pointer flex items-center gap-1 min-h-[38px]"
+                        >
+                          {lang === "hi" ? "जांचें" : "Verify ID"}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPrompt16ContractorScan(true);
+                          setPrompt16ContractorIdInput("LP-IND-391821-A");
+                          handleVoiceSpeak("क्यूआर कोड सफलतापूर्वक स्कैन हो गया है।", "Secure QR scan successful. Hari Ram's passport loaded.");
+                        }}
+                        className="p-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 hover:text-white rounded-xl transition font-extrabold font-mono text-xs flex items-center justify-center gap-2 cursor-pointer min-h-[38px]"
+                      >
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
+                        <span>{lang === "hi" ? "क्यूआर स्कैन डेमो" : "Scan QR Demo"}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!prompt16ContractorScan && !prompt16ContractorIdVerified) {
+                            alert("Please scan a QR or verify a Passport ID first.");
+                            return;
+                          }
+                          setPrompt16ContractorApproved(true);
+                          handleVoiceSpeak("वर्क ऑर्डर के लिए कामगार स्वीकृत हो गया है।", "Worker approved for work order successfully.");
+                        }}
+                        className="p-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-slate-950 rounded-xl transition font-extrabold font-mono text-xs flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]"
+                      >
+                        <Check className="w-4 h-4" />
+                        <span>{lang === "hi" ? "वर्क ऑर्डर हेतु स्वीकृत" : "Approve for Work Order"}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Verification telemetry checks */}
+                  <div className="pt-4 border-t border-slate-900 space-y-2.5">
+                    <span className="text-[10px] text-slate-500 font-mono uppercase font-bold tracking-wider block">
+                      🛡️ Real-Time Safety Gate / सुरक्षा गेटवे:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+                      <div className="p-2 bg-slate-900/80 rounded-lg border border-slate-850 flex items-center justify-between">
+                        <span className="text-slate-400">{lang === "hi" ? "नकली आईडी जांच" : "Fake ID Check"}</span>
+                        <span className="text-emerald-400 font-bold uppercase">✓ Passed</span>
+                      </div>
+                      <div className="p-2 bg-slate-900/80 rounded-lg border border-slate-850 flex items-center justify-between">
+                        <span className="text-slate-400">{lang === "hi" ? "पृष्ठभूमि परत" : "Trust Layer"}</span>
+                        <span className="text-emerald-400 font-bold uppercase">✓ Verified</span>
+                      </div>
+                      <div className="p-2 bg-slate-900/80 rounded-lg border border-slate-850 flex items-center justify-between">
+                        <span className="text-slate-400">{lang === "hi" ? "पात्रता स्थिति" : "Job Eligibility"}</span>
+                        <span className="text-emerald-400 font-bold uppercase">✓ Approved</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Panel: Simulated Scan Result (Col 6) */}
+                <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
+                  {(prompt16ContractorScan || prompt16ContractorIdVerified) ? (
+                    <div className="bg-gradient-to-br from-slate-950 via-slate-950 to-emerald-950/15 border border-emerald-500/20 p-5 rounded-2xl flex-1 space-y-4 text-xs font-mono relative animate-fadeIn">
+                      <div className="flex justify-between items-center border-b border-slate-900 pb-2">
+                        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                          <ShieldCheck className="w-4 h-4" /> PASSPORT FOUND
+                        </span>
+                        <span className="text-[9px] text-slate-500">LP-IND-391821-A</span>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between border-b border-slate-900 pb-1.5">
+                          <span className="text-slate-500">{lang === "hi" ? "कामगार का नाम" : "Worker"}:</span>
+                          <span className="font-bold text-white text-sm">Hari Ram — Mason</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "निकटता" : "Distance"}:</span>
+                            <span className="font-bold text-white block mt-0.5">📍 1.2 km</span>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "विश्वास स्कोर" : "Trust Score"}:</span>
+                            <span className="font-bold text-emerald-400 block mt-0.5">🛡️ 98%</span>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "हाजिरी दर" : "Attendance Rate"}:</span>
+                            <span className="font-bold text-emerald-400 block mt-0.5">📊 99%</span>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 block text-[9px] uppercase">{lang === "hi" ? "विवाद जोखिम" : "Payment Dispute Risk"}:</span>
+                            <span className="font-bold text-emerald-400 block mt-0.5">✓ Low</span>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-850 flex items-center justify-between text-xs">
+                          <span className="text-slate-400 font-bold">{lang === "hi" ? "अनुशंसित कार्रवाई:" : "Recommended Action:"}</span>
+                          <span className="text-slate-950 font-black bg-emerald-400 px-2 py-0.5 rounded font-mono text-[10px] uppercase">
+                            SAFE TO HIRE
+                          </span>
+                        </div>
+                      </div>
+
+                      {prompt16ContractorApproved && (
+                        <div className="p-3 bg-emerald-500 text-slate-950 font-sans font-bold rounded-xl space-y-1 shadow-lg animate-fadeIn">
+                          <div className="flex items-center gap-1.5 text-xs">
+                            <CheckCircle2 className="w-4 h-4" />
+                            <span>{lang === "hi" ? "कार्य आदेश स्वीकृत ✓" : "Work Order Approved ✓"}</span>
+                          </div>
+                          <p className="text-[10px] font-normal font-mono opacity-90 leading-tight">
+                            Worker has been securely assigned to your Gorakhpur site project.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="bg-slate-950/40 border border-slate-855 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center flex-1 space-y-2">
+                      <Camera className="w-8 h-8 text-slate-600 animate-pulse" />
+                      <h6 className="text-slate-400 font-bold text-xs uppercase font-mono tracking-wider">
+                        {lang === "hi" ? "स्कैन परिणाम के लिए तैयार" : "Awaiting Scanner / Verification Query"}
+                      </h6>
+                      <p className="text-[11px] text-slate-500 max-w-xs">
+                        {lang === "hi"
+                          ? "डेमो परिणाम देखने के लिए 'क्यूआर स्कैन' बटन दबाएं या 'सत्यापित आईडी' इनपुट का उपयोग करें।"
+                          : "Press the 'Scan QR Demo' button or enter a valid passport ID to run simulated verification checks."}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Compliance Warning */}
+                  <div className="bg-slate-900/40 p-2.5 rounded-lg border border-slate-850 text-[10px] text-slate-500 font-mono leading-snug">
+                    🛡️ <strong>Demo Compliance Note:</strong> No real Aadhaar, banking, or government API is connected. This module demonstrates contractor-side cryptographic passport verification workflow only.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -7779,6 +8251,104 @@ export default function HomePage() {
                         ? "प्रीमियम ट्रेडों से प्राप्त शुल्क सामान्य श्रमिकों के मुफ्त डिजिटल प्रशिक्षण और निशुल्क बुनियादी सुविधाओं के वित्तपोषण में काम आता है।"
                         : "Premium trade fees directly fund free digital training classes and infrastructure for general laborers."}
                     </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* PROMPT-16: NATIONAL PASSPORT REGISTRY MONITOR */}
+              <div id="national-passport-registry-monitor" className="mt-10 border-t border-slate-800 pt-8 text-left space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2.5 bg-gradient-to-tr from-emerald-500 to-emerald-600 text-slate-950 rounded-2xl shadow-xl">
+                      <ShieldCheck className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-extrabold text-white font-sans tracking-tight">
+                        {lang === "hi" ? "राष्ट्रीय श्रम पासपोर्ट रजिस्ट्री" : "National Labour Passport Registry"}
+                      </h4>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        {lang === "hi"
+                          ? "क्रिप्टोग्राफिक पहचान सत्यापन और राष्ट्रीय स्तर पर धोखाधड़ी का पता लगाने की वास्तविक समय निगरानी।"
+                          : "Real-time monitoring of cryptographic identity verification and nation-wide spoofing detection layers."}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-mono font-bold uppercase tracking-wider">
+                    REGISTRY MONITOR ACTIVE
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 font-mono">
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "कुल डिजिटल पासपोर्ट" : "Total Passports"}</span>
+                    <span className="text-lg font-black text-amber-500 mt-1 block">82.4 L</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block">8,240,000 active</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "आधार केवाईसी सत्यापित" : "Aadhaar Verified"}</span>
+                    <span className="text-lg font-black text-white mt-1 block">76.8 L</span>
+                    <span className="text-[8px] text-emerald-400 mt-0.5 block">● 93% rate</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "क्यूआर प्रमाणीकरण आज" : "QR Auths Today"}</span>
+                    <span className="text-lg font-black text-white mt-1 block">1.86 L</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block">Direct scans</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "अवरुद्ध धोखाधड़ी प्रयास" : "Fraud Blocked"}</span>
+                    <span className="text-lg font-black text-rose-500 mt-1 block">12,480</span>
+                    <span className="text-[8px] text-rose-500 mt-0.5 block">Auto-isolated</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "लिंक्ड कौशल प्रमाणपत्र" : "Linked Skills"}</span>
+                    <span className="text-lg font-black text-emerald-400 mt-1 block">41.2 L</span>
+                    <span className="text-[8px] text-emerald-400 mt-0.5 block">MSDE verified</span>
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850">
+                    <span className="text-[9px] text-slate-500 block uppercase tracking-wider">{lang === "hi" ? "कार्य इतिहास रिकॉर्ड" : "Work Histories"}</span>
+                    <span className="text-lg font-black text-emerald-400 mt-1 block">3.8 Cr</span>
+                    <span className="text-[8px] text-slate-500 mt-0.5 block">Ledger recorded</span>
+                  </div>
+                </div>
+
+                {/* Fraud Detection Layer card */}
+                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-850 space-y-4">
+                  <div className="flex items-center gap-2 border-b border-slate-900 pb-2.5">
+                    <ShieldAlert className="w-4.5 h-4.5 text-amber-500" />
+                    <h5 className="text-xs font-mono text-slate-400 uppercase tracking-widest font-bold">
+                      {lang === "hi" ? "सुरक्षा एवं धोखाधड़ी का पता लगाने की परत" : "Fraud Detection Layer Status"}
+                    </h5>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs font-mono">
+                    <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 flex items-center justify-between">
+                      <span className="text-slate-400">{lang === "hi" ? "दोहरा पासपोर्ट की जांच" : "Duplicate Passport Check"}</span>
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-bold uppercase">
+                        ACTIVE
+                      </span>
+                    </div>
+                    <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 flex items-center justify-between">
+                      <span className="text-slate-400">{lang === "hi" ? "फर्जी कांट्रेक्टर ध्वजांकन" : "Fake Contractor Flagging"}</span>
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-bold uppercase">
+                        ACTIVE
+                      </span>
+                    </div>
+                    <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 flex items-center justify-between">
+                      <span className="text-slate-400">{lang === "hi" ? "उपस्थिति स्पूपिंग का पता लगाना" : "Attendance Spoofing Detection"}</span>
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-bold uppercase">
+                        ACTIVE
+                      </span>
+                    </div>
+                    <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-900 flex items-center justify-between">
+                      <span className="text-slate-400">{lang === "hi" ? "सेटलमेंट रसीद सत्यापन" : "Settlement Receipt Verification"}</span>
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-bold uppercase">
+                        ACTIVE
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-900/40 p-3 rounded-xl border border-slate-850 text-[10px] text-slate-500 font-mono leading-normal">
+                    🛡️ <strong>Demo Compliance Note:</strong> All registry values, fraud flagging patterns, and detection vectors are high-fidelity simulation components representing potential national infrastructure architecture. No real government APIs are contacted.
                   </div>
                 </div>
               </div>
@@ -10968,6 +11538,101 @@ export default function HomePage() {
                           <span className="text-amber-400 font-bold font-mono text-sm leading-none">{insight.val}</span>
                         </div>
                         <p className="text-[10px] text-slate-400 leading-normal">{insight.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* BENTO GRID: SECTION 3.5 - REGIONAL WAGES & SKILL MAPPING */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* DYNAMIC WAGE INDEX BY REGION */}
+              <div className="lg:col-span-6 bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <IndianRupee className="w-5 h-5 text-amber-500" />
+                      <div>
+                        <h3 className="text-sm font-bold text-white font-mono">
+                          {lang === "hi" ? "क्षेत्रवार गतिशील मजदूरी सूचकांक" : "Dynamic Wage Indexes by Region"}
+                        </h3>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                          {lang === "hi" ? "प्रमुख क्षेत्रों में दैनिक मजदूरी दरों का तुलनात्मक विश्लेषण" : "Comparative analysis of daily trade wages across prime regions."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 font-mono text-xs">
+                    {[
+                      { region: "Eastern UP Average (पूर्वी यूपी)", avg: "₹450 / day", change: "+12.4% YoY", trend: "up" },
+                      { region: "NCR Delhi Average (दिल्ली एनसीआर)", avg: "₹680 / day", change: "+8.2% YoY", trend: "up" },
+                      { region: "Western UP Average (पश्चिमी यूपी)", avg: "₹520 / day", change: "+9.1% YoY", trend: "up" },
+                      { region: "Mumbai Met Region (मुंबई क्षेत्र)", avg: "₹710 / day", change: "+14.3% YoY", trend: "up" },
+                      { region: "Bihar State Average (बिहार राज्य)", avg: "₹380 / day", change: "+6.8% YoY", trend: "up" },
+                      { region: "Bundelkhand Average (बुंदेलखंड)", avg: "₹410 / day", change: "+11.2% YoY", trend: "up" }
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-slate-950/50 p-3 rounded-xl border border-slate-850 flex items-center justify-between">
+                        <div>
+                          <span className="text-white font-bold block">{item.region}</span>
+                          <span className="text-[10px] text-emerald-400 block mt-0.5">{item.change}</span>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-sm font-black text-amber-500 block">{item.avg}</span>
+                          <span className="text-[9px] text-slate-500 block uppercase">Real-Time Index</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* SKILL-TO-WAGE MAPPING STATISTICS */}
+              <div className="lg:col-span-6 bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-amber-500" />
+                      <div>
+                        <h3 className="text-sm font-bold text-white font-mono">
+                          {lang === "hi" ? "कौशल-से-मजदूरी मानचित्रण सांख्यिकी" : "Skill-to-Wage Mapping Statistics"}
+                        </h3>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                          {lang === "hi" ? "सत्यापित कौशल प्रमाणन के आधार पर प्रीमियम मूल्य निर्धारण" : "Premium pricing based on verified skill levels and certifications."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {[
+                      { trade: "Mason (राजमिस्त्री)", unverified: "₹380", verified: "₹480", premium: "+26%" },
+                      { trade: "Electrician (बिजली मिस्त्री)", unverified: "₹450", verified: "₹600", premium: "+33%" },
+                      { trade: "Plumber (प्लंबर)", unverified: "₹420", verified: "₹550", premium: "+31%" },
+                      { trade: "Welder (वेल्डर)", unverified: "₹500", verified: "₹680", premium: "+36%" },
+                      { trade: "Painter (पेंटर)", unverified: "₹400", verified: "₹500", premium: "+25%" },
+                      { trade: "Helper (सहायक)", unverified: "₹300", verified: "₹350", premium: "+16%" }
+                    ].map((item, idx) => (
+                      <div key={idx} className="space-y-2">
+                        <div className="flex justify-between items-center text-xs font-mono">
+                          <span className="text-white font-bold">{item.trade}</span>
+                          <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded text-[10px]">
+                            {item.premium} Premium
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-[10px] font-mono text-slate-400">
+                          <div className="flex justify-between p-1.5 bg-slate-950/40 rounded border border-slate-850">
+                            <span>{lang === "hi" ? "अपुष्ट मजदूरी" : "Unverified"}:</span>
+                            <span className="text-rose-400 line-through">{item.unverified}</span>
+                          </div>
+                          <div className="flex justify-between p-1.5 bg-slate-950/60 rounded border border-emerald-500/10">
+                            <span className="text-emerald-400 font-bold">{lang === "hi" ? "पासपोर्ट सत्यापित" : "Verified Passport"}:</span>
+                            <span className="text-emerald-400 font-black">{item.verified}</span>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
