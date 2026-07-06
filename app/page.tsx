@@ -53,6 +53,14 @@ import {
   ShieldAlert
 } from "lucide-react";
 
+import {
+  ProfessionIllustration,
+  CategoryIllustration,
+  DashboardIllustration,
+  IntelIllustration,
+  HeroIllustration
+} from "../components/ProfessionIllustrations";
+
 // Initial static dataset of professions based on the required categories
 interface Profession {
   id: string;
@@ -86,7 +94,7 @@ const INITIAL_PROFESSIONS: Profession[] = [
     wageRange: { min: 750, max: 1100, unit: "day" },
     availability: "Daily",
     description: "निर्माण कार्यों में अनुभवी पेशेवर जो दीवार बनाने, कंक्रीट मिक्स करने और उत्कृष्ट प्लास्टरिंग में सक्षम हैं।",
-    imageSeed: "masonry"
+    imageSeed: "mason"
   },
   {
     id: "p2",
@@ -102,7 +110,7 @@ const INITIAL_PROFESSIONS: Profession[] = [
     wageRange: { min: 650, max: 950, unit: "day" },
     availability: "Daily",
     description: "लकड़ी के काम में निपुण कारीगर जो नए फर्नीचर बनाने, फिटिंग और मरम्मत कार्यों के विशेषज्ञ हैं।",
-    imageSeed: "woodwork"
+    imageSeed: "carpenter"
   },
   {
     id: "p3",
@@ -118,7 +126,7 @@ const INITIAL_PROFESSIONS: Profession[] = [
     wageRange: { min: 600, max: 850, unit: "day" },
     availability: "Daily",
     description: "दीवारों की तैयारी और शानदार फिनिशिंग के साथ उच्च गुणवत्ता वाले पेंटिंग काम के विशेषज्ञ।",
-    imageSeed: "painting"
+    imageSeed: "painter"
   },
   {
     id: "p4",
@@ -134,7 +142,7 @@ const INITIAL_PROFESSIONS: Profession[] = [
     wageRange: { min: 150, max: 400, unit: "hour" },
     availability: "Hourly",
     description: "घरेलू वायरिंग, सुरक्षा जांच और बिजली के उपकरणों की त्वरित मरम्मत के प्रमाणित मिस्त्री।",
-    imageSeed: "electrical"
+    imageSeed: "electrician"
   },
   {
     id: "p5",
@@ -156,6 +164,326 @@ const INITIAL_PROFESSIONS: Profession[] = [
     id: "p6",
     name: "General Labourer",
     hindiName: "मजदूर (General Labour)",
+    category: "general",
+    roleLabel: "सामान्य मजदूर / General Labour",
+    typicalTasks: [
+      "सामान की लोडिंग और अनलोडिंग (Material loading & shifting)",
+      "साइट की सफाई और मिट्टी खुदाई (Site cleaning & soil excavation)",
+      "मुख्य कारीगरों की सहायता करना (Assisting senior tradespersons)"
+    ],
+    wageRange: { min: 450, max: 600, unit: "day" },
+    availability: "Daily",
+    description: "निर्माण, सामान शिफ्टिंग, सफाई और अन्य शारीरिक श्रम कार्यों के लिए ऊर्जावान और भरोसेमंद मजदूर।",
+    imageSeed: "general labourer"
+  },
+  {
+    id: "p7",
+    name: "Agricultural Worker",
+    hindiName: "खेती मजदूर (Agri Worker)",
+    category: "rural",
+    roleLabel: "कृषि सहायक / Agricultural Worker",
+    typicalTasks: [
+      "फसलों की कटाई और बुवाई (Crop harvesting & sowing)",
+      "खेतों की सिंचाई और निराई (Irrigation & field weeding)",
+      "ट्रैक्टर और कृषि यंत्र संचालन (Agri machinery support)"
+    ],
+    wageRange: { min: 400, max: 550, unit: "day" },
+    availability: "Daily",
+    description: "फसलों की देखभाल, कटाई, बुवाई और खेतों के मौसमी कार्यों में कुशल अनुभवी ग्रामीण मजदूर।",
+    imageSeed: "agricultural worker"
+  },
+  {
+    id: "p8",
+    name: "Domestic Helper",
+    hindiName: "सहायक (Domestic Helper)",
+    category: "helper",
+    roleLabel: "सहायक / Helper",
+    typicalTasks: [
+      "घर या कार्यालय की सफाई (Cleaning & dusting)",
+      "रसोई और पेंट्री सहायता (Kitchen & pantry support)",
+      "दैनिक काम और सामान लाना (Daily errands & deliveries)"
+    ],
+    wageRange: { min: 400, max: 600, unit: "day" },
+    availability: "Daily",
+    description: "साफ-सफाई, घरेलू मदद, दुकान की देखरेख और दैनिक कार्यों के लिए विनम्र एवं फुर्तीले सहायक।",
+    imageSeed: "domestic helper"
+  },
+  {
+    id: "p9",
+    name: "Tile Worker",
+    hindiName: "टाइल कारीगर (Tile Worker)",
+    category: "construction",
+    roleLabel: "टाइल कारीगर / Tile Worker",
+    typicalTasks: [
+      "फर्श और दीवारों पर टाइल्स फिटिंग (Floor & wall tile fitting)",
+      "संगमरमर और ग्रेनाइट कटिंग (Marble & granite cutting)",
+      "ग्राउटिंग और जोइंट्स सीलिंग (Grouting & joint sealing)"
+    ],
+    wageRange: { min: 700, max: 1000, unit: "day" },
+    availability: "Daily",
+    description: "कमरों, शौचालयों और रसोई घरों में टाइल्स और मार्बल बिछाने के अनुभवी कारीगर।",
+    imageSeed: "tile worker"
+  },
+  {
+    id: "p10",
+    name: "POP Worker",
+    hindiName: "पीओपी कारीगर (POP Worker)",
+    category: "construction",
+    roleLabel: "पीओपी और फॉल्स सीलिंग / POP Worker",
+    typicalTasks: [
+      "फॉल्स सीलिंग और जिप्सम बोर्ड (False ceiling & gypsum boarding)",
+      "दीवार पर कॉर्निस और मोल्डिंग (Wall cornices & moldings)",
+      "प्लास्टर ऑफ पेरिस डिजाइनिंग (Plaster of Paris decorative designs)"
+    ],
+    wageRange: { min: 650, max: 950, unit: "day" },
+    availability: "Daily",
+    description: "घरों में सुंदर सीलिंग डिजाइन, मोल्डिंग और जिप्सम बोर्ड का काम करने के एक्सपर्ट।",
+    imageSeed: "pop worker"
+  },
+  {
+    id: "p11",
+    name: "Steel Fixer",
+    hindiName: "लोहा बांधने वाला (Steel Fixer)",
+    category: "construction",
+    roleLabel: "सरिया बांधने वाला / Steel Fixer",
+    typicalTasks: [
+      "आरसीसी बीम और कॉलम बांधना (RCC beam & column grid fixing)",
+      "लोहे की जाली तैयार करना (Creating steel mesh frameworks)",
+      "ब्लूप्रिंट के अनुसार सरिया काटना (Cutting rebar as per site blueprints)"
+    ],
+    wageRange: { min: 650, max: 900, unit: "day" },
+    availability: "Daily",
+    description: "लेंथ, बीम और छत ढलाई के समय कंक्रीट स्ट्रक्चर के लिए मजबूत लोहे का जाल बांधने वाले कारीगर।",
+    imageSeed: "steel fixer"
+  },
+  {
+    id: "p12",
+    name: "Bar Bender",
+    hindiName: "सरिया मोड़ने वाला (Bar Bender)",
+    category: "construction",
+    roleLabel: "सरिया कारीगर / Bar Bender",
+    typicalTasks: [
+      "स्टील रीइन्फोर्समेंट छड़ों को मोड़ना (Bending steel reinforcement bars)",
+      "रिंग्स और स्टिरप्स का निर्माण (Manufacturing stirrups and rings)",
+      "साइट पर सरिया वेल्डिंग सपोर्ट (On-site steel bending and sizing)"
+    ],
+    wageRange: { min: 600, max: 850, unit: "day" },
+    availability: "Daily",
+    description: "ढलाई और पिलर के लिए सरियों को निर्दिष्ट कोणों पर मोड़ने और रिंग बनाने के कुशल कारीगर।",
+    imageSeed: "bar bender"
+  },
+  {
+    id: "p13",
+    name: "Fabricator",
+    hindiName: "फैब्रिकेटर (Fabricator)",
+    category: "repair",
+    roleLabel: "लोहा फैब्रिकेटर / Fabricator",
+    typicalTasks: [
+      "लोहे के गेट और ग्रिल बनाना (Iron gate & grill fabrication)",
+      "टीन शेड और धातु फ्रेम्स (Tin shade & metal frame installations)",
+      "गैस कटर और वेल्डिंग कम्बाइंड वर्क (Gas cutting and sheet metal works)"
+    ],
+    wageRange: { min: 700, max: 1050, unit: "day" },
+    availability: "Daily",
+    description: "मेटल स्ट्रक्चर, लोहे के दरवाजे, सीढ़ियों की ग्रिल और खिड़की के फ्रेम बनाने के निपुण मिस्त्री।",
+    imageSeed: "fabricator"
+  },
+  {
+    id: "p14",
+    name: "Roofer",
+    hindiName: "छत बनाने वाला (Roofer)",
+    category: "construction",
+    roleLabel: "रूफिंग कारीगर / Roofer",
+    typicalTasks: [
+      "टीन और एस्बेस्टस शेड लगाना (Installing tin & asbestos roof sheets)",
+      "खपरैल और वॉटरप्रूफिंग (Tile roofing & roof waterproofing)",
+      "छत की कंक्रीट ढलाई सपोर्ट (Roof casting scaffolding setup)"
+    ],
+    wageRange: { min: 650, max: 950, unit: "day" },
+    availability: "Daily",
+    description: "विभिन्न प्रकार की छतों की फिटिंग, लीक रिपेयर और ढलाई से पहले वॉटरप्रूफिंग करने वाले विशेषज्ञ।",
+    imageSeed: "roofer"
+  },
+  {
+    id: "p15",
+    name: "Driver",
+    hindiName: "चालक (Driver)",
+    category: "helper",
+    roleLabel: "कमर्शियल चालक / Driver",
+    typicalTasks: [
+      "लोडिंग गाड़ी और डंपर चलाना (Driving commercial loading trucks)",
+      "निजी वाहन या एम्बुलेंस चलाना (Driving private cars or ambulances)",
+      "सुरक्षित वाहन रखरखाव (Vehicle safety maintenance)"
+    ],
+    wageRange: { min: 500, max: 800, unit: "day" },
+    availability: "Flexible",
+    description: "सभी आवश्यक ड्राइविंग लाइसेंस के साथ भारी और हल्के वाहनों को सुरक्षित चलाने के अनुभवी ड्राइवर।",
+    imageSeed: "driver"
+  },
+  {
+    id: "p16",
+    name: "Security Guard",
+    hindiName: "सुरक्षा गार्ड (Security Guard)",
+    category: "helper",
+    roleLabel: "सुरक्षा गार्ड / Security Guard",
+    typicalTasks: [
+      "प्रवेश द्वार की निगरानी (Gate keeping & entry logs)",
+      "रात की गश्त और सुरक्षा राउंड (Night patrolling & safety rounds)",
+      "सीसीटीवी फुटेज चेकिंग (CCTV monitoring & emergency response)"
+    ],
+    wageRange: { min: 450, max: 700, unit: "day" },
+    availability: "Daily",
+    description: "फैक्ट्रियों, सोसायटियों और व्यावसायिक स्थलों की दिन-रात सुरक्षा करने वाले अनुशासित गार्ड।",
+    imageSeed: "security guard"
+  },
+  {
+    id: "p17",
+    name: "HVAC Technician",
+    hindiName: "एसी मिस्त्री (HVAC Tech)",
+    category: "repair",
+    roleLabel: "एसी और वेंटिलेशन / HVAC Technician",
+    typicalTasks: [
+      "सेंट्रल और स्प्लिट एसी सर्विस (Central & split AC servicing)",
+      "गैस चार्जिंग और लीकेज ठीक करना (AC gas filling & leak repair)",
+      "डक्टिंग और वेंटिलेशन पाइपिंग (Ducting & ventilation piping)"
+    ],
+    wageRange: { min: 200, max: 450, unit: "hour" },
+    availability: "Hourly",
+    description: "एयर कंडीशनर, रेफ्रिजरेटर और बड़े वेंटिलेशन प्लांट की मरम्मत के कुशल और अनुभवी मिस्त्री।",
+    imageSeed: "hvac technician"
+  },
+  {
+    id: "p18",
+    name: "Solar Technician",
+    hindiName: "सोलर कारीगर (Solar Tech)",
+    category: "repair",
+    roleLabel: "सोलर इंस्टॉलेशन / Solar Technician",
+    typicalTasks: [
+      "सोलर पैनल माउंटिंग (Solar panel mounting & setup)",
+      "इन्वर्टर और बैटरी वायरिंग (Solar inverter & battery wiring)",
+      "रखरखाव और वोल्टेज चेकिंग (System maintenance & voltage checking)"
+    ],
+    wageRange: { min: 200, max: 400, unit: "hour" },
+    availability: "Hourly",
+    description: "घरों और सोलर पंपों पर सोलर ग्रिड पैनल और बैटरी असेंबली लगाने के प्रशिक्षित तकनीशियन।",
+    imageSeed: "solar technician"
+  },
+  {
+    id: "p19",
+    name: "Helper",
+    hindiName: "हेल्पर (Helper)",
+    category: "general",
+    roleLabel: "कुशल सहायक / Helper",
+    typicalTasks: [
+      "मुख्य मिस्त्री की सहायता (Assisting lead technician on site)",
+      "सामान की साफ-सफाई और लोडिंग (On-site cleaning & material shifting)",
+      "दुकान या साइट का काम संभालना (Handling minor tool movements)"
+    ],
+    wageRange: { min: 450, max: 550, unit: "day" },
+    availability: "Daily",
+    description: "काम को गति देने के लिए मुख्य कारीगरों की मदद करने वाले और वजन उठाने में सक्षम मेहनती हेल्पर।",
+    imageSeed: "helper_role"
+  },
+  {
+    id: "p20",
+    name: "Machine Operator",
+    hindiName: "मशीन ऑपरेटर (Machine Operator)",
+    category: "general",
+    roleLabel: "मशीन ऑपरेटर / Machine Operator",
+    typicalTasks: [
+      "फैक्ट्री यूनिट्स का संचालन (Operating industrial manufacturing units)",
+      "कटर और कंप्रेशर हैंडलिंग (Handling cutter, compressor & drills)",
+      "मशीनों की सामान्य मरम्मत (Basic machinery troubleshooting)"
+    ],
+    wageRange: { min: 550, max: 800, unit: "day" },
+    availability: "Daily",
+    description: "औद्योगिक इकाइयों में कंक्रीट मिक्सर, कटर और अन्य स्वचालक मशीनों को चलाने वाले ऑपरेटर।",
+    imageSeed: "machine operator"
+  },
+  {
+    id: "p21",
+    name: "Scaffolding Worker",
+    hindiName: "पाड़ बांधने वाला (Scaffolder)",
+    category: "construction",
+    roleLabel: "पाड़ कारीगर / Scaffolding Worker",
+    typicalTasks: [
+      "लोहे और बांस की पाड़ बांधना (Erecting steel & bamboo scaffolding)",
+      "सुरक्षा जाली और नेट लगाना (Installing construction safety nets)",
+      "ऊंचाई पर काम करने का सपोर्ट (Dismantling scaffolds post-project)"
+    ],
+    wageRange: { min: 650, max: 900, unit: "day" },
+    availability: "Daily",
+    description: "बहुमंजिला इमारतों में पेंटिंग या कंक्रीट कार्य के लिए सुरक्षित और मजबूत सीढ़ियां (पाड़) बनाने वाले कारीगर।",
+    imageSeed: "scaffolding worker"
+  },
+  {
+    id: "p22",
+    name: "Road Construction Worker",
+    hindiName: "सड़क मजदूर (Road Worker)",
+    category: "construction",
+    roleLabel: "सड़क निर्माण सहायक / Road Construction Worker",
+    typicalTasks: [
+      "डामर और गिट्टी फैलाना (Spreading asphalt & gravel)",
+      "रोड रोलर के साथ लेबलिंग सपोर्ट (Assisting road roller leveling)",
+      "सड़क किनारे ड्रेनेज लाइन बनाना (Excavating drainage trenches)"
+    ],
+    wageRange: { min: 500, max: 650, unit: "day" },
+    availability: "Daily",
+    description: "एक्सप्रेसवे, हाईवे और जिला संपर्क सड़कों के निर्माण कार्य में अनुभवी परिश्रमी मजदूर।",
+    imageSeed: "road construction worker"
+  },
+  {
+    id: "p23",
+    name: "Civil Supervisor",
+    hindiName: "सिविल सुपरवाइजर (Supervisor)",
+    category: "helper",
+    roleLabel: "साइट सुपरवाइजर / Civil Supervisor",
+    typicalTasks: [
+      "कामगारों की हाजिरी दर्ज करना (Logging worker daily attendance)",
+      "मटेरियल की आवक का रिकॉर्ड (Checking on-site material supply)",
+      "काम की गुणवत्ता की जांच (Verifying construction quality as per plan)"
+    ],
+    wageRange: { min: 800, max: 1300, unit: "day" },
+    availability: "Flexible",
+    description: "कामगारों का प्रबंधन करने और ठेकेदार व इंजीनियर के निर्देशों का पालन कराने वाले अनुभवी सुपरवाइजर।",
+    imageSeed: "civil supervisor"
+  },
+  {
+    id: "p24",
+    name: "Site Engineer",
+    hindiName: "साइट इंजीनियर (Site Engineer)",
+    category: "helper",
+    roleLabel: "सिविल इंजीनियर / Site Engineer",
+    typicalTasks: [
+      "नक्शे के अनुसार लेआउट मार्किंग (Marking site layouts as per drawings)",
+      "कंक्रीट और स्टील टेस्ट रिपोर्ट (Conducting concrete slump and rebar tests)",
+      "सुरक्षा मानदंडों का अनुपालन (Ensuring absolute strict safety compliance)"
+    ],
+    wageRange: { min: 1000, max: 1800, unit: "day" },
+    availability: "Contract",
+    description: "कम्प्यूटर डिजाइन और सिविल प्लान के अनुसार निर्माण कार्य को संचालित और सत्यापित करने वाले डिग्री/डिप्लोमा धारक इंजीनियर।",
+    imageSeed: "site engineer"
+  },
+  {
+    id: "p25",
+    name: "Welder",
+    hindiName: "वेल्डर (Welder)",
+    category: "repair",
+    roleLabel: "वेल्डर / Welder",
+    typicalTasks: [
+      "लोहे और स्टील की वेल्डिंग (Arc and MIG welding of iron/steel)",
+      "कटिंग और मेटल जॉइनिंग (Metal cutting and joint profiling)",
+      "साइट पर संरचनात्मक वेल्डिंग (Structural welding on active construction sites)"
+    ],
+    wageRange: { min: 650, max: 950, unit: "day" },
+    availability: "Daily",
+    description: "गेट, ग्रिल, गर्डर और पिलर रीइन्फोर्समेंट के जोड़ों को आर्क या गैस वेल्डिंग से सुरक्षित करने वाले वेल्डर।",
+    imageSeed: "welder"
+  },
+  {
+    id: "p6",
+    name: "General Labour",
+    hindiName: "सामान्य मजदूर (General Labour)",
     category: "general",
     roleLabel: "सामान्य मजदूर / General Labour",
     typicalTasks: [
@@ -7746,15 +8074,15 @@ export default function HomePage() {
 
         {/* 2. Profession Discovery Grid with Stacked HI/EN display */}
         <div id="profession-grid" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {filteredProfessions.map((prof) => {
+          {filteredProfessions.map((prof, index) => {
             // Text to speak for this card
             const voiceTextHi = `${prof.hindiName.split(" (")[0]}. यह ट्रेड ${prof.category} क्षेत्र में आता है। इस कार्य की अनुमानित दर ₹${prof.wageRange.min} से ₹${prof.wageRange.max} प्रति ${prof.wageRange.unit === 'day' ? 'दिन' : 'घंटा'} है।`;
             const voiceTextEn = `${prof.name} in category ${prof.category}. Estimated rate is ${prof.wageRange.min} to ${prof.wageRange.max} rupees per ${prof.wageRange.unit}.`;
 
             return (
               <div
-                key={prof.id}
-                id={`prof-card-${prof.id}`}
+                key={`${prof.id}-${prof.name}-${index}`}
+                id={`prof-card-${prof.id}-${index}`}
                 onClick={() => setSelectedProfession(prof)}
                 className={`group relative bg-gradient-to-b ${getCardStyle(prof.imageSeed)} border rounded-2xl p-5 hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col justify-between overflow-hidden shadow-lg min-h-[220px]`}
               >
