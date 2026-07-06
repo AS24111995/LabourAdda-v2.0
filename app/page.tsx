@@ -49,7 +49,8 @@ import {
   Shield,
   Coins,
   CreditCard,
-  CheckCircle
+  CheckCircle,
+  ShieldAlert
 } from "lucide-react";
 
 // Initial static dataset of professions based on the required categories
